@@ -1,0 +1,11 @@
+;******* Maximus CBCS DownSORT Definition File (.DEF) ********
+;
+;  The module definition file supplies extra information about the program
+;  module to the LINKER.
+
+NAME    Downsort  WINDOWCOMPAT
+
+DESCRIPTION 'MAXimus CBCS DOWNload file SORT. Copyright (1987,93) Rob Hamerling'
+; PROTMODE
+STACKSIZE  12000
+HEAPSIZE   8000

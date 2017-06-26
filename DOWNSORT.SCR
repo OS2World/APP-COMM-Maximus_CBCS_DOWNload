@@ -1,0 +1,2275 @@
+:userdoc sec='Maximus Download File Sort and List Utility (OS/2 and DOS)'
+.*
+.* For printing: use Bookmaster profile.
+.*
+.* This file also compilable by IPFC (just ignore the errors!).
+.*
+:prolog.
+.*
+.* ==========================================================
+.* Translate macros for IBM host printing
+.*
+.dm on3270 on
+.if &$SYS ne pc .ti É  10 Ë  13 »  30 Ì  31 Î  21 ¹  23
+.if &$SYS ne pc .ti È  12 Ê  22 ¼  32 Í  33 º  11
+.if &$SYS ne pc .ti Ú  10 Â  13 ¿  30 Ã  31 Å  21 ´  23
+.if &$SYS ne pc .ti À  12 Á  22 Ù  32 Ä  33 ³  11
+.if &$SYS ne pc .ti Ö  10 Ò  13 ·  30 Ç  31 ×  21 ¶  23
+.if &$SYS ne pc .ti Ó  12 Ğ  22 ½  32
+.if &$SYS ne pc .ti Õ  10 Ñ  13 ¸  30 Æ  31 Ø  21 µ  23
+.if &$SYS ne pc .ti Ô  12 Ï  22 ¾  32
+.if &$SYS ne pc .ti   35   25   26   36
+.if &$SYS ne pc .ti [  b0 ]  6a
+.dm off
+.*  ÉÍËÍÍÍÍ»   ÚÄÂÄÄÄÄ¿   ÖÄÒÄÄÄ·   ÕÍÑÍÍÍ¸      right arrow
+.*  ÌÍÎÍÍÍÍ¹   ÃÄÅÄÄÄÄ´   ÇÄ×ÄÄÄ¶   ÆÍØÍÍÍµ      left arrow
+.*  º º    º   ³ ³    ³   º º   º   ³ ³   ³      up arrow
+.*  ÈÍÊÍÍÍÍ¼   ÀÄÁÄÄÄÄÙ   ÓÄĞÄÄÄ½   ÔÍÏÍÍÍ¾      down arrow
+.dm off3270 on
+.if &$SYS ne pc .ti É É Ë Ë » » Ì Ì Î Î ¹ ¹ È È Ê Ê ¼ ¼ Í Í º º
+.if &$SYS ne pc .ti Ú Ú Â Â ¿ ¿ Ã Ã Å Å ´ ´ À À Á Á Ù Ù Ä Ä ³ ³
+.if &$SYS ne pc .ti Ö Ö Ò Ò · · Ç Ç × × ¶ ¶ Ó Ó Ğ Ğ ½ ½
+.if &$SYS ne pc .ti Õ Õ Ñ Ñ ¸ ¸ Æ Æ Ø Ø µ µ Ô Ô Ï Ï ¾ ¾
+.if &$SYS ne pc .ti            
+.if &$SYS ne pc .ti [ [ ] ]
+.dm off
+.*
+.* Bookmaster tags voor deze macro's:
+.*
+.aa on3270 on3270
+.aa off3270 off3270
+.* ==========================================================
+.*
+.nameit symbol=VERSION text='5'.
+.nameit symbol=SUBVERS text='9'.
+.nameit symbol=SUFFIX  text=' '.
+.*
+:revision id=59 run=yes.
+.*
+:title.DOWNSORT
+&rbl.
+Maximus CBCS DOWNload file SORT and List Utility
+&rbl.
+Version &VERSION..&SUBVERS.&SUFFIX. (OS/2 and DOS)
+:etitle.
+:author.Rob Hamerling
+:date.
+:address.
+Vianen, The Netherlands
+Phone: ++31-3473-72136 (voice)
+FIDO-net: 2&colon.512/4.1098
+:eaddress.
+:docprof rhrfrule=none
+         language=english
+         figlist=nopage
+         tlist=nopage
+         ftsep=no
+         layout=2
+         fbc=no
+         toc=12
+         ldrdots=yes.
+:eprolog.
+:frontm.
+:tipage.
+:toc.
+:body.
+.* ==============================================================
+.* Contact addresses (beta-testers)
+.* Lody Caenen             2:280/801  BBS: 075-704045    voice: 075-158305
+.* Gerard van Essen                   BBS:               voice:
+.* Winston van Oosterhout  2:512/63   BBS: 01680-30617   voice:
+.* ==============================================================
+:h1.About Downsort
+:p.Downsort was originated in 1987 as a program for my own use when
+I was SYSOP of the Bulletin Board PC-Square (2:512/4), to automatically
+generate daily overviews of my download material for the users.
+The program name is related to the SORTing of the collection of
+DOWNloadable files, in DOWNward time-stamp sequence and an online
+Bulletin was the only list that was produced at that time.
+PC-Square was running BinkleyTerm and OPUS under DOS, and
+file-requesting was not so popular then.
+:p.Now PC-Square runs with OS/2, BinkleyTerm and MAXIMUS CBCS.
+I'm not SYSOP anymore but still strongly involved.
+As a contribution to PC-Square and the large international Bulletin
+Board community of MAXIMUS CBCS boards, and in the highly appreciated
+spirit of BinkleyTerm, I decided to upgrade my Downsort program to the
+current software.
+During the past years a lot of improvements and extensions have been
+made&colon. many user-configurable options for many more output formats
+then the original Downsort.
+:p.The only dependency of Downsort on MAXIMUS CBCS is a parameter-file
+AREA.DAT, which is usually created with a MAXIMUS utility (SILT(P)),
+which itself can be used without actually running MAXIMUS!
+This is the way I work for testing of Downsort.
+:p.:hdref refid=ahis. gives an impression of recent history.
+:p.Downsort is now developed in an OS/2 environment, but it is
+distributed as 'family'-application: it runs under OS/2 and DOS.
+Recently a 32-bits version for OS/2 2.0 has been added for OS/2 2.0 and up.
+:p.Downsort is in its 7-th year of development and has entered a period
+where life becomes more and more complicated.
+While adding new features, I have tried to maintain compatibility.
+This is a main cause of complications.
+Maybe in one of the newer versions I have to leave this compatibility in
+favour of maintainability and user-friendliness.
+In anticipation of this, please do not use undocumented features, or
+styles of usage that are not described in this document.
+.* --------------
+:rev refid=59.
+:h2.Quick start
+:p.I appreciate that you are eager to use Downsort.
+You don't have to make a comprehensive study of this document.
+But please read the comments in Downsort.Cfg before making the changes you
+consider appropriate.
+:p.And before reporting supposed bugs or missing features, please continue
+to read this document!
+:erev refid=59.
+.* --------------
+:h2.Registration and Shareware Fee
+:p.Downsort is a $ 0.00 Shareware (Freeware) Program.
+This means (to me) that you respect the commonly known rules for
+shareware, but you don't have to pay me anything.
+:p.Registration is voluntary&colon. please send me a netmail message
+with your name and (net-)address if you are a regular user of Downsort
+as SYSOP.
+That gives me an impression of the usage and the impact of changes to
+Downsort.
+:p.If you tell me that you are running Downsort on your Bulletin Board
+as service to your users, and you appreciate to be mentioned, I'll add
+your name to the reference list in :hdref refid=ause..
+.* --------------
+:h2.Warranty
+:p.For this price?
+You must be kidding!
+But I'll listen to your complaints and suggestions, and if time permits,
+I'll work on the improvements you suggested.
+.* --------------
+:h2.Acknowledgements
+:p.I would like to thank all users that contributed with constructive
+remarks and encouraging appraisals.
+Without doubt Emmanuel Sandorfi, former SYSOP of 2&colon.320/5, holds
+the record in number of suggestions and amount of additionally required
+programming effort.
+He also provided some additional title-fonts (2 and 3).
+:p.I also would like to thank the regular users (SYSOP's of Bulletin
+Boards) who made Downsort much more popular than I ever dreamed of!
+A collection of geographically dispersed Boards can be found in
+:hdref refid=ause..
+.* =============================================
+:h1.Overview
+:p.Downsort is a program to make lists of available download files
+for Bulletin Board Systems, especially MAXIMUS CBCS.
+The different types of lists are each for a specific audience
+(online bulletin board user, file-requestor, SYSOP) and purpose
+(all files, recent acquisitions).
+Within each type there are many ways to customise the contents
+(selection on user-privilege or user-interest), and format
+(sort-sequence of files, titles, logo, etc).
+:p.Downsort can produce the following report-types :fnref refid=usys.
+for you:
+:fn id=usys.For the target audience the distiction between 'user' and
+'sysop' is strictly the author's view!
+:efn.
+(:hp2.all these can be produced in one run:ehp2.).
+:ul.
+.*
+:li.user-lists
+:ul compact.
+:li.BBS-list, a colorful overview for :hp2.online:ehp2. users of
+MAXIMUS CBCS
+:li.NEW-list of the most recent files
+(as a response to a file-request of 'NEWFILES')
+:li.ALL-list for a complete overview in a file-group per area
+(as a response to a filerequest of 'FILES' of 'ALLFILES')
+:li.IPF-list similar contents as ALL-list, but in a different
+presentation format (VIEW-able under OS/2)
+:li.GBL-list for a complete overview over the area-boundaries,
+as an alternative for ALL-list if you don't want to bother
+file-requestors with your area-structure
+:eul.
+.*
+:li.SYSOP lists:
+:ul compact.
+:li.ORPHAN-report as a help with management of the contents of your
+area's and directories, and to correct possible upload problems or
+inconsistencies
+:li.DUP-list for a list of duplicate filenames as a help to control your
+disk-space and with version management.
+:li.OKFile for (Binkley) File Requests.
+:li.EMI-list for a list of new file arrivals to be included in an
+announcement message.
+:li.Updated FILES.BBS files
+:eul.
+.*
+:eul.
+:p.The lists can be generated for different privilege levels,
+and be customised to a very high extend to present your system as you
+like it to be seen by your users (headers, log, etc).
+At the same time Maximus (and OPUS) conventions are reflected in the
+way the file information is presented.
+:p.A sample of most of these lists can be found in :hdref refid=lsmp..
+:p.In short: Downsort is a very versatile tool to manage your database
+of files, both in an OS/2 and DOS environment.
+.* ------------------------
+:h2.Purpose and Objectives
+:p.Downsort is designed for the following purposes:
+:ol.
+:li.Produce different overviews of files which are available for
+download by online users of the Bulletin Board and by File Requestors.
+QUICK and EASY file retrieval is the main goal for the lists.
+Therefore many lists-types and within a type several variations
+should be available for SYSOP and users.
+:li.Should not disclose files to users (file-requesters) without
+positive agreement by SYSOP.
+:li.Detect discrepancies between the contents of FILES.BBS and the
+corresponding download directory, such as:
+:ul compact.
+:li.The directory contains so called :hp2.orphan:ehp2.-files, which have
+no descriptive entry in FILES.BBS.
+:li.FILES.BBS contains entries of which the file in not in the directory
+(is 'offline').
+This may be on purpose!
+:eul.
+:li.Must be able to be run unattended (typically overnight).
+The file-access privilege system of a Bulletin Board System like Maximus
+CBCS should be respected by the reports.
+:eol.
+.* ==============================================
+:h1 id=guide.User's Guide
+:p.This chapter explains the possibilities of Downsort.
+Parameter specifications will be covered in :hdref refid=specs..
+.* --------------------------------
+:h2.Initial setup
+:p.When you are going to use Downsort for the first time, you have to
+make a number of decisions.
+Below you'll find a kind of check-list, which is setup to help you with
+a logical sequence of tasks to make the use of Downsort succesful.
+It does NOT give detailed specifications, these can be found in
+:hdref refid=specs..
+:p.The specifications will be put into a configuration file
+Downsort.CFG, which may contain information about:
+:ol.
+.*
+:li.Data Collection
+:p.File information will be collected from:
+:ul compact.
+:li.Privilege and download path-information from AREA.DAT
+:li.Actual file-information from download directories
+:li.FILES.BBS files for file descriptions
+:eul.
+.*
+:li.List Type Selection
+:p.Downsort can produce the following report types for you (all in one run).
+:ul compact.
+:li.ORPHAN-report for SYSOP use only
+:li.BBS-list for :hp2.online:ehp2. users of MAXIMUS CBCS
+:li.NEW-list(s) for a list of the most recent files
+:li.ALL-list(s) for a complete overview in a file-group per area
+:li.IPF-list(s) same as ALL-list, but in a different presentation format
+(VIEW-able under OS/2,
+there is a special IP2-list for OS/2 2.0).
+:li.GBL-list(s) for a complete overview over area-boundaries
+:li.DUP-list(s) for a list of possibly duplicate filenames
+:li.OKFile(s) for (Binkley) File Requests
+:li.EMIFile(s) to for a list of file arrivals over the last period
+:li.Updated FILES.BBS files
+:eul.
+.*
+:li.File selection
+:p.Reporting of file-information can be limited by:
+:ul compact.
+:li.Reporting privilege: only those files up to a certain privilege
+level will be listed
+:li.Area INclude or EXclude: for sub-selection for special interest
+groups
+:rev refid=59.
+:li.Maximus area key/lock system
+:li.Explicit exclusion by specification of filespecs (wildcards)
+:erev refid=59.
+:li.Number of files or period (days, weeks or months) to be reported
+:eul.
+.*
+:li.List Customisation
+:p.The layout of the lists can be jazzed-up with:
+:ul compact.
+:li.BLOCK-title and its font
+:li.TopTitle, SubTitle, BottomTitle, Include (logo-) file
+:li.Sorting sequence of area's in ALL-list (unsorted, name, include)
+:li.Sorting sequence of files (unsorted, date, filename)
+:li.Truncation, or wrapping and indenting of file descriptions
+:li.Area- or file-privilege information
+:li.Message and Warning texts
+:li.Handling of Avatar codes in comment lines (strip or mimic).
+:eul.
+:p.All in the language which suites your audience best.
+:eol.
+:p.The sample Downsort.CFG file (see :hdref refid=acfg.) contains
+defaults and a brief information to help you with the
+parameter specifications.
+:p.Below you can find some more explanation.
+.* ----------------------------
+:h2.Data Collection
+.*
+:h3.AREA.DAT
+:p.A MAXIMUS file 'AREA.DAT' is absolutely required by Downsort.
+It is however not necessary to run MAXIMUS yourself,
+the AREA.DAT file is created with SILT(P) from the MAXIMUS package.
+You can use this utility without the other MAXIMUS stuff.
+In fact I do that myself (NOT running a MAXIMUS board)!
+If you run Downsort in a directory without AREA.DAT, then you should use
+specify the filespec for AREA.DAT.
+It allows also to specify a different AREA.DAT file than the one that is
+used by your MAXIMUS.
+:p.With SILT(P) you may build a special AREA.DAT for exclusive use by
+Downsort, with different, less, or even more directories!
+Probably much more convenient is the use of AreaINclude or
+AreaEXclude in Downsort.CFG to limit the contents of the lists to
+a group of area's, that you want to report together, while you use the
+regular AREA.DAT.
+A combination of a 'special' AREA.DAT and AreaIN/EXcludes is another
+option to obtain areagroups.
+:p.Remember: The combination of area privilege in AREA.DAT and the
+report-privilege specification in Downsort.CFG may restrict the contents
+of reports.
+AreaINclude is subordinate to this and will work only for the collection
+of area's within these privilege limits.
+:rev refid=59.
+Area-selection on Maximus' userkey may be another restriction.
+:p.In addition files may explicitly excluded during the data collection
+process by specification of a number of filespecifications (wildcards
+allowed).
+:erev refid=59.
+:p.If Downsort reports a memory constraint (see also :hdref refid=perf.),
+you may use these techniques as circumvention: exclude one or more of
+the file area's and rerun Downsort.
+.*
+:h3.FILES.BBS
+:p.Downsort uses the information in AREA.DAT to locate the description
+files, usually called FILES.BBS.
+So either the ListFile specification in AREA.DAT, or the download
+directory to locate them (Maximus default).
+.* -----------------------------------
+:h2.List Type Selection
+:p.Downsort can produce several types of output reports,
+indicated by type of list.
+The following list types are available
+:rev refid=59.
+(all list types may be generated in multiple variants within one run of
+Downsort, i.c. with a single directory scan!).
+:erev refid=59.
+.* ---
+:h3 id=orphan.ORPHAN-list
+:p.This is a list of all files in download directories for which
+there is no entry in any FILES.BBS file of all areas which have this
+directory specified as download path.
+The report contains date, area-name and area-path of the orphan.
+The entries are sorted on area and filename.
+:rev refid=59.
+:p.Not reported are the files that match all FileEXclude specifications.
+Normally you would exclude FILES.*, *.BAK, DIR.?BS and SYSTEM*.?BS.
+:erev refid=59.
+:p.If you have more than 1 area pointing to the same download directory,
+but with different FILES.BBS files, the orphans are reported for the
+first of these areas only.
+:note.If there is an entry for a file in FILES.BBS without a
+description, the file is NOT considered to be an Orphan!
+.* ---
+:h3.BBS-list
+:p.This is a list of downloadfiles that became recently available
+on your system.
+File selection is on date, but for presentation the list may be sorted
+on date, newest first or on filename.
+:p.The list contains compiled MECCA control sequences, for direct use in
+MAXIMUS bulletins: a user-privilege sensitive list!
+It might be a good idea to put a translated &lbrk.onexit&rbrk. string,
+which translates into: &caret.OFpath.
+When a user exits from the BBS-list bulletin, it will fall back to the
+exit-bulletin.
+:p.The length of the file (number of file-entries) may be limited by
+parameters:
+:ul compact.
+:li.file-count
+:li.file age in days, weeks or months (30 days)
+:li.maximum privilege
+:eul.
+:p.(never more than available within the privilege limit).
+If neither specified it will contain all available files in all download
+directories.
+:p.To make it easy for you to build a complete MAXIMUS bulletin-file a
+user-provided header is included preceding the list and a trailer at the
+end of the list.
+Header and trailer can be built by SYSOP, and may contain any
+information and bulletin-control sequences (a sample is provided).
+.* ---
+:h3.NEW-list
+:p.Basically the same list as above, but in simple ASCII format.
+This list is suitable for regular file-requestors as brief overview
+of the latest additions, updates or replacements.
+.* ---
+:h3 id=emi.EMI-list
+:p.Basically the same as NEW-list, but more compact:
+:ul compact.
+:li.contains file also file-time and exact filesize in bytes.
+:li.Description wrapping (if used) is overlapping the file-details
+except filename (may be justified with indentation).
+:eul.
+:p.The EMI-list is especially suitable to generate file-arrival messages
+(the output should be included by another program).
+.* ---
+:h3.ALL-list
+:p.A list of all downloadfiles by area.
+Files of the same area are listed in groups, separated by imbedded
+headers with area-name, -description, and -privilege.
+Actual status information is provided in the area-header as well:
+area-filecount and -bytecount, and latest acquisition (date and
+file-name).
+:p.At the end a SUMMARY report shows per area: area-title,
+file-count, byte-count, and totals.
+:p.The size of this list is limited only by the privilege parameter.
+The numbers in area-header and summary report show only what is
+available for the particular privilege.
+.* ---
+:h3.IPF- and IP2-list
+:p.Same contents as ALL-list but in a different format.
+Only useful for users that run OS/2 (OS/2 version 1.2+ under
+Presentation Manager).
+This file has the format of an input-file for the Information
+Presentation Facility Compiler (IPFC).
+:p.There is a separate form of this list (called IP2-list) for OS/2 2.0.
+It produces information that can be compiled only with the accompanying
+IPF Compiler of the OS/2 2.0 Toolkit.
+The result however can be VIEWed under OS/2 1.3!
+.* ---
+:h3.GBL-list
+:p.Similar to ALL-list,
+but where ALL-list gives the files in groups per area, the GBL-list
+ignores area-boundaries and gives a single group.
+It contains an extra column with the area-code for each file, there is
+no area-summary.
+:p.SYSOP may choose which of both is suitable to make available to
+users, and which to use for himself (or even both).
+:p.The GBL-list can be used in stead of the ALL-list if your users
+prefer searching in the list without having to bother about
+area-organisation.
+Although one of the original purposes of the GBL-list was checking for
+duplicate files, there is now also a special report for this particular
+purpose (see :hdref refid=dup.).
+.* ---
+:h3 id=dup.DUP-list
+:p.Simple report of :hp2.possibly:ehp2. duplicate files over the area's.
+The format is basically the same as the GBL-list, but only files with
+the :hp2.same filename:ehp2. are reported.
+'Offline' files are included in the check, orphans are not!
+:p.Please note that the DUP-list may not always contain what you expect.
+It can be more or less, for example:
+:ul compact.
+:li.Downsort looks primarily at filenames only (extension is of second
+importance, path is completely ignored).
+:li.You may have explicitly excluded area's from the search.
+:li.You may have excluded area's by privilege: Downsort completely
+ignores area's with a higher privilege than any report asked for.
+:li.You have duplicates in 'orphan'-state.
+:eul.
+:p.These circumstances may give 'false' signals or hide duplicates!
+:p.All duplicate files within the privilige-range will be reported,
+even when a counterpart has a higher privilege or are orphan (and thus will
+not be reported in the DUP-list)!
+You may need a file-finder-utility to search for the 'partner'-file
+in one of the directories with a higher privilege.
+:p.There are very few other parameters applicable to this list.
+File descriptions may be specified as truncated or wrapped.
+All user-titles are left out and only a sort on filename is
+supported.
+:p.Suppression of reporting files with equal filenames and different
+extensions is possible with the "NonDupEXT" keyword in Downsort.Cfg.
+You specify pairs of extensions.
+Two files with equal filename and one of each having an extension specified
+as 'pair' will not be reported as duplicate.
+For example, if you specify:
+:xmp.
+   NonDupEXT  SDN  SDA
+:exmp.
+then file pairs xyz.SDN and xyz.SDA will not be reported in the DUP-list.
+:p.This pair-exclusion can also be used for more than 2 extensions, but
+the exclusion works only for pairs of files.
+So then you must specify as many pairs as can be formed.
+For example if you want to exclude file combinations like xyz.IDX
+xyz.DAT and xyz.EXT, then you should specify:
+:xmp.
+   NonDupEXT  IDX DAT  IDX EXT  DAT EXT
+:exmp.
+:warning.The check on duplicates by Downsort works only when you specify all
+possible pairs of extensions!
+If you fail to specify any possible pair, the Dup-list may contain false
+signals.
+:ewarning.
+:p.Multiple pairs may be specified on a line, and multiple lines are
+allowed.
+.* ---
+:h3 id=okf.OKFile
+:p.List filespecifications for file-requests in BinkleyTerm style.
+The generated paths in the list obey the following rules:
+:ul.
+:li.the area-privilege is within the privilege limit of the report
+:li.the area is not excluded (by areaEXclude)
+:li.the area has at least 1 file within the privilege limit of the
+report
+:eul.
+:p.The paths are sorted on area-name (although the area-name is not part
+of the list).
+There is no check on duplicate paths.
+:p.The list is not jazzed-up with titles, etc, but a file may be included in
+front of the list if specified on the OKFileList in Downsort.CFG (see :hdref
+refid=acfg.).
+This option allows you to insert a list of 'magic' names in the OKFile.
+:p.Two formats are available:
+:ul compact.
+:li.SHORT format with lines in the format "filepath\*.*".
+This is the regular format for BinkleyTerm and other mailers.
+:li.LONG format with lines in the format: "@filespec  filepath\filespec".
+All files have a 'magic'-name assigned and there are no generic file
+specifications in the OKFileList.
+This prevents directory searches for BinkleyTerm for each file request.
+:eul.
+:note.Some newer versions of BinkleyTerm can use the file base of Maximus
+to find a file even faster.
+.* ---
+:h3 id=filbbs.Rebuild FILES.BBS
+:p.New "FILES.BBS" type of file may be (re-)created, one for every area.
+The contents of the file-information will be about the same as
+the original FILES.BBS, but with the following notes:
+:ul compact.
+:li.A header is generated with area-name, -title, and -privilege.
+Also the total amount of files and bytes and the most recently acquired
+new file in this area is part of the header information.
+:li.Files with a privilege up to and including the area-privilege
+are listed first.
+:li.Files can have a privilege other than the area-privilege when the
+original FILES.BBS file contains &caret.Pp-sequences ('p' being a
+privilege letter).
+This construction will be rebuilt by Downsort.
+Files with a higher privilege than the area-privilege will follow
+after a compiled MECCA-sequence (&caret.Pp) in the new FILES.BBS.
+Downsort respects these indicators when reading FILES.BBS,
+so all file-privilege information is retained.
+This ensures no accidental loss of file-information, and the regular
+user won't see more than he should.
+:li.Wild-card specifications in the original FILES.BBS are not
+propagated to the new FILES.BBS.
+:li.The file description is kept internally as a single string
+of about 2 KBytes (Maximus 2.0 supports up to 240 bytes!)
+When creating FILES.BBS files, this will be the file format (single
+record per file-entry).
+The original FILES.BBS may contain a (long) single string
+description, or multiple (short) multiline descriptions.
+When encountering multi-line descriptions in input-FILES.BBS, Downsort
+concatenates the separate description lines with a single intermediate
+space up to a maximum of 2 KBytes.
+This will be the output format if the FIL-list is requested.
+:li.Comments in FILES.BBS will be preserved :hp3.only:ehp3.
+when the Keep-Sequence option is used (specify /K on the FilFileList
+line of Downsort.Cfg).
+:eul.
+:p.Special attention is requested for the following:
+:ul compact.
+:li.The first 8 lines, :hp2.if comments:ehp2. (starting with a
+'-'-character), are discarded.
+These lines are assumed to be the standard header for FILES.BBS of Downsort.
+:li.Downsort from version 5.7 recognises its own headerlines with the
+characters: <-><&delta.><&delta.><backspace><backspace> for each of its
+header-lines, and will skip all lines starting with this sequence during the
+data collection phase, even when encountered after line 8.
+:li.You can include your own file with the /I-option on the FILFilePath
+line in Downsort.Cfg in the header of FILES.BBS.
+All lines in the include-file for FILES.BBS output will be prefixed by
+Downsort with the 5-character sequence mentioned above to make sure that
+these will also be 'refreshed' by Downsort.
+:eul.
+:p.The destination of FILES.BBS-files is not by definition the same as
+the origin!
+When specified with the "FIL&colon."-parameter (or in the configuration
+file), the output may be located in a different directory than the
+original input FILES.BBS.
+:p.When the output is directed to a separate directory, the files will
+be named as follows:
+:dl tsize=14 termhi=2.
+:dt.FILES.ac
+:dd.when :hp2.all:ehp2. areanames (areacodes) of the selected areas in a
+single run of Downsort are 3 bytes or less.
+:dt.areaname.BBS
+:dd.when :hp2.any:ehp2. areaname is longer than 3 bytes.
+:edl.
+:p.The format of the header will be slightly different.
+Font specification (/Fx in FILFileList) works for the second case only.
+:p.Manual checking or post-processing by some other program may follow
+Downsort, after which the files might be put back on the MAXIMUS
+specified position.
+.* ------------------------------
+:h2 id=select.Data Selection
+:rev refid=59.
+:p.During the data collection phase of Downsort, files are selected on
+several criteria.
+Generally speaking not more information is collected than needed for all
+lists in a single run of Downsort.
+:p.During the list creation phase a further file selection may take place.
+:p.Apart form the short OK-list, all lists are created from the file
+information.
+This means for example that if a selection is such that no files of a
+certain area fall within the list criteria, the area will not appear in any
+list.
+:erev refid=59.
+.* ---
+:h3.Privilege control
+:p.The default file privilege to be shown in the lists is SYSOP.
+All files with a higher privilege than the specified (or defaulted)
+report-privilege will not appear in the lists.
+:p.Files without a matching filename-entry in FILES.BBS are treated as
+Hidden.
+That means that by default these files will not be listed,
+unless the 'H' privilege is used on the report-request specification.
+:p.If you run a mailer like BinkleyTerm and support file-requests, you
+lack the extensive privilege system like Maximus.
+The only distiction BinkleyTerm makes with file-request is
+'unknown', 'known' and 'password-protected'.
+You may generate multiple download lists with different privilege
+indictor, depending if you allow these categories to request different
+file collections a sample of this kind of environment is given in
+:hdref refid=sampl..
+:p.This is not needed for Downsort.BBS, since this file has imbedded
+privilege control sequences for MAXIMUS users.
+But you should specify a sufficiently high privilege for the BBS-list to
+satisfy your most valuable users!
+.* ---
+:h3.AREA selection
+:rev refid=59.
+:p.There are several ways to perform area selection:
+:ol.
+:li.AREA.DAT file needs not be the regular complete AREA.DAT used by your
+online Maximus system.
+:li.AreaINclude and/or AreaEXclude statements may select groups of area's
+by name from the used AREA.DAT file.
+:li.Individual list specifications may further reduce the lists on file
+privilege and userkeys.
+The latter makes use of the Maximus feature called 'key/locks'.
+:eol.
+:erev refid=59.
+:p.You should realise that this is the latest selection during the data
+collection phase.
+Area-privilege selection has taken place already before AreaIN/EXclude,
+or UserKeys are processed.
+So make sure you specified a sufficiently high report-privilege to get
+the proper areas into the group.
+:rev refid=59.
+:note.During the reporting phase you may further restrict file-reporting
+with privilege, userkeys or time period!
+:erev refid=59.
+.* ---
+:rev refid=59.
+:h3.Filename selection
+:p.A completely separate selection is possible on filename.
+Downsort scans download directories and collects data of all files
+(except those with the hidden or system attribute).
+With the keyword FileEXclude in Downsort.cfg, you may indicate which files
+you want to exclude from processing by Downsort, based on filename.
+With one or more filespecs, wildcards allowed, all files with matching
+filespec will be excluded during the data collection phase, regardless of
+the area.
+The current implementation supports only the traditional 8.3 filename.ext
+format, no long names and no explicit path.
+:p.In versions of Downsort before 5.9 the hardcoded specification of
+certain 'system' files has been removed, and these filespecs should now be
+specified in Downsort.cfg.
+The sample Downsort.cfg does contain these specifications.
+I suggest to leave that line asis and add one or more new lines for your own
+use.
+:warning.FileEXcluded files will even not appear in the FILES.BBS (re-)created
+by Downsort!
+:ewarning.
+:erev refid=59.
+.* ---
+:h3.Report length
+:p.For lists that are meant to show the latest file-information only
+(BBS-, NEW- and ALL-list), the length of the list can be limited to
+a maximum number of file-entries or to file-age in days, weeks or
+months.
+.*
+.* ------------------------------
+:h2.List Customisation
+.*
+:h3.Headers, Titles and Include files
+:p.There are several ways to custimise the appearance of the lists for
+Downsort.
+All items in the following list are optional, but the sequence in the
+reports is fixed and as listed:
+:dl tsize=12 termhi=2.
+:dt.Pre-Title
+:dd.Lines that should appear as the very first lines of your lists.
+Any text may be specified.
+Leading '&tilde.'-characters (tilde) will be treated as full-size required
+blanks, mainly to manually align (center) the text in these lines.
+There is no automatic centering.
+You may have to experiment a little.
+:dt.TITLE
+:dd.A short title (8-12 characters), that will be magnified to big
+BLOCK-letters.
+There are 4 block-fonts to choose from.
+Not all characters are supported and lower-case will be translated to
+upper-case.
+The '&tilde.'-character (tilde) will be treated as full-size required
+blank, the '&grave.'-character (accent-grave) as half-size required
+blank.
+:p.If not specified, a default title is generated as Downsortxy, where
+xy stands for the current version of Downsort.
+:dt.TitleFont
+:dd.Number of the font to be used for the BLOCK title.
+If specified as 0, the BLOCK-title will NOT be generated at all.
+:dt.Include-file
+:dd.A text-file to be included.
+There will be no manipulation of the contents of this file.
+This include-file may be all you need to obtain a fully custimised list.
+For the IPF-list this include file will most likely have to contain IPF
+tags for proper formatting,
+for the OK-file it will be a list of 'magic' name entries.
+:dt.Sub-Title
+:dd.Lines that should appear immediately following the block-title.
+:dt.BottomTitle
+:dd.Lines that should appear as very last lines of the lists.
+These follow my 'signature'.
+:edl.
+:p.The BLOCK-title and Pre-, Sub-, and Bottom-titles are used for all
+reports identically, there is no such thing as an 'individual' title
+specification for each report.
+However the Include-file may be different for each report.
+If you want to build more than 1 list but with different 'headings'
+or no headings at all, you better forget the Title-options.
+In stead make heading-files and use the Include option of the individual
+list specifications.
+:note.Exceptions:
+:ol.
+:li.None of the above does apply to the BBS-list.
+As it will generally be desirable to imbed (compiled) MECCA control
+sequences in this type of lists, this report will include dedicated top
+and bottom files (if available in the current default directory).
+These files must be called Downsort.HDR (header) and Downsort.TRL
+(trailer).
+:li.The ORPHAN report will not contain any user-titles.
+:li.The FILES.bbs files will not use any of the title-specifications,
+but may use an Include-file.
+:eol.
+:p.:hp2.Recommendation:ehp2.&colon. File-requestors appreciate a header
+with a clear indication of the source of the reports.
+Many Bulletin Boards use FILES or ALLFILES as 'magic' name,
+but that is not very distinctive if you collect lists of different
+boards!
+So use Downsort's facilities to generate a block-title with your
+system-name, or an include file with some kind of logo.
+:note.Specification details and samples can be found in Downsort.CFG.
+:p.Some SYSOPs do not like to confront their users with privileges.
+In most headers there will be a line with the reporting privilege.
+This may be suppressed.
+.* ---
+:h3.File Sorting
+:p.The file-entries in the lists can be sorted on different keys:
+:ul.
+:li.Filedate
+:li.Filename
+:li.Sequence of FILES.BBS
+:eul.
+:p.The default sorting sequence depends on the type of list.
+Some lists do not support some of these sorting keys.
+:note.File sorting has a local scope.
+It can be specified for to each listtype individually.
+.* ---
+:h3.Area Sorting
+:p.The order in which the areas are presented in the lists can be
+specified:
+:ul compact.
+:li.Order of AREA.DAT
+:li.Sorted alphabetically on areaname
+:li.Order of areaINclude statement in Downsort.Cfg
+:li.Groupname-order
+:eul.
+:p.The Groupname-order is a special order based on a popular naming
+convention for areas.
+Many SYSOPs use areanames with a group-name or -letter followed by a
+sequence number.
+With groupname sorting the areaname is split - if possible - into a
+groupname (if the first character is not be numeric) and a sequence number
+(if the last part of areaname is numeric).
+Primary sort key is groupname, secundary sortkey is sequence number.
+If the first character of the area-name is numeric, the groupname
+is empty, and if the last part of the areaname is not numeric, the
+second key is empty.
+:p.If the ordering does not match your more complicated area naming
+convention, you can always fallback on a properly sequenced AREA.DAT,
+or on areaINclude sequence.
+:p.If Include-order is specified, but AreaINclude is not, then the
+order falls back to Group-order.
+:p.The area-order specification has a global scope.
+It applies to every lists where the areaname is significant, including
+summaries in ALL- and IPF-lists.
+:p.Default sorting order is 'Group'.
+.* ---
+:h3.Warnings, Indications, Descriptions and Comments
+:ul.
+:li.There are two options for long file descriptions
+(those that do not fit on a 80-character line):
+:ul compact.
+:li.Truncation at end-of-line
+:li.Wrapping to multiple lines
+:eul.
+:p.Both options are available for all lists,
+but the defaults vary with the type of the report.
+If wrapping is used indentation of continuation lines.
+.*
+:li.Orphan description:
+Text that will be reported in the description column of a file, when
+for this file no entry in FILES.BBS could be located.
+:p.Default: "--- Orphan ---".
+.*
+:li.Not-Found description:
+Text for the description column when the file-entry was found in
+FILES.BBS, but there was no description present.
+:p.Default: "--- no description available ---".
+.*
+:li.Offline description:
+Text that will replace file-size and file-date, when an entry for this
+file was found in FILES.BBS, but the file could not be located in the
+download directory.
+:p.Default: "** offline **".
+.*
+:li.Comments in FILES.BBS (mostly used for additional description for
+groups of files) will be listed when no sorting is specified (the /K
+option for ALL-, IPF- and FIL-lists).
+:p.When Downsort encounters Avatar screen handling codes in FILES.BBS
+these are stripped of or partially imitated in the output lists (unless
+AVAstrip&rbl.No is specified in Downsort.Cfg).
+Typical screen handling commands (cursor movement, color settings) are just
+stripped, ohers (repeating characters of patterns) are imitated.
+.*
+:li.Size of a VIEW-page in IPF-list:
+The IPF-list of area's with more than 250 file entries will be splitted
+into 'parts' to prevent the IPF-compiler message 'page size exceeded'.
+But if you have many long descriptions, or wish smaller parts, the
+page-size can be altered with a parameter on the IpfFileList line in
+Downsort.CFG.
+:p.Default: 250.
+.*
+:eul.
+.* ---------------------------
+:h2.Miscellaneous report information
+.* ---
+:h3.File Information in Lists
+:ol.
+:li.Dates are marked with a 'new'-indicator: a '*' if the file
+is only since a week on this system, and a '+' if it is since a month.
+Filedates later than the current system date are marked '-' (negative
+age).
+:li.In every outputfile the filename, MAXIMUS-area name, file-size and
+-date, and file-description from FILES.BBS is listed.
+A report-line will never display more than 79 characters.
+:p.The file-description will be multi-line in ALL-, IPF- and GBL-list
+if it is longer than would fit on the standard 79-position line, a
+word-wrapping technique is used for readability (line-split on word
+boundary).
+The description is truncated at end of line in BBS-list and NEW-list.
+:p.The -T option will force truncation of the description in all reports,
+the -W option will allow multi-line descriptions in all reports.
+When wrapping is used, continuation lines will normally be aligned
+on the start position of the desription.
+This may be modified with an indentation option.
+:p.If a filename is found in FILES.BBS, but no accompanying description,
+a "--- no description available ---" will be put in place.
+An alternative text may be specified with Downsort.CFG.
+:p.Files for which there is no entry in the FILES.BBS (Orphans) are
+treated as Hidden files, which are only listed in the reports if the
+Hidden privilege is specified.
+:note.If you want the orphans to appear in FILES.BBS (or in any other
+report), you MUST also request an ORP-list!
+:li.'OFFLINE" in stead of file-size and file-date is reported if
+FILES.BBS contains an file-entry while the file is not in the
+corresponding directory.
+:li.The BBS-list contains MAXIMUS authorisation controls
+(&caret.PLp-sequences), corresponding to the privilege of the area or the
+individual file.
+So it is not necessary to make different files for different categories
+of MAXIMUS users, even with the default privilege-limit SYSOP a
+user will not see the files he/she is not supposed to know about.
+:p.Other lists do not contain any privilege information,
+the files (or complete area's) above the specified privilege are simply
+not listed, however multiple lists can be produced for different
+categories of users (based on privilege).
+:eol.
+.* ---
+:h3.File Dates
+:p.One of the function of Downsort is sorting on file date.
+Since the introduction of HPFS in OS/2 version 1.2, there is not one
+single file-date anymore!
+A file on an HPFS volume has different values for:
+:ul compact.
+:li.Creation date
+:li.LastAccess date
+:li.LastWrite date
+:eul.
+:p.The date you see normally in DIR-listings is the LastWrite date.
+Most SYSOPs will have noticed that ZMODEM uploads and file-attaches
+give file-dates corresponding to the (LastWrite-) date of the sending
+system.
+And most utilities handle only this 'single' date.
+That means that old ZMODEM-uploaded files are generally not on top
+of the acquisition lists.
+:p.But HPFS stores the date of arrival on your system (Creation) as
+well.
+Downsort handles the Creation date for sorting, but the lists (see
+below) contain the 'old fashioned' LastWrite date.
+This has the following consequences:
+:ul compact.
+:li.A new acquisition is on top of lists, if that list is sorted on
+date, and are marked in the lists as new by a flag for an 'age' of a
+week or a month.
+:li.The listed file-date is the 'ordinary' date.
+So users can judge for themselves if the file is 'new' for them as well.
+:eul.
+:note.The LastAccess date is not very relevant for the purposes of
+Downsort, although SYSOP may see when it was last downloaded.
+:p.Downsort is delivered with a simple DIR-like utility 'HPFSDATE' to
+show the three dates of a file on a HPFS volume.
+:rev refid=59.
+:p.Files with 'future' file dates will be indicated with a '-' flag in the
+lists.
+These files will never appear in: BBS-, NEW-, and EMI-lists.
+:erev refid=59.
+.* ---
+:h3.Duplicate Filenames
+:p.Duplicate filenames are checked if the DUP-list is requested,
+and they will be reported only in the DUP-list.
+So duplicates may appear in the regular user-lists, which means:
+:ul compact.
+:li.If a filename.ext is encountered more than once in different
+subdirectories of FILES.BBS files, it will appear that many times in the
+outputlist.
+The file-privilege reflects that of the area where the file belongs to,
+unless overridden by a &caret.Px modifier in FILES.BBS.
+:li.It may happen that a file is reported as orphan in one area,
+and as duplicate in another.
+It is likely that the file is found in a common download directory of
+more than one area but it is described in the FILES.BBS of a 'secundary'
+area, but with the wrong extension.
+:note.Duplicate file reporting may be influenced with the 'NonDupExt'
+specification, see :hdref refid=dup..
+:eul.
+.* ==============================================
+:h1 id=specs.Parameter Specifications
+:p.This chapter tells you how to customise the configuration file and
+what you might specify on the commandline.
+:p.A sample configuration file (in :hdref refid=acfg.) is part of the
+package.
+It contains a brief comments (in Binkley and MAXIMUS style) to help you.
+.* --------------------------
+:h2 id=hcmd.Commandline parameters
+:p.This paragraph deals only with the commandline parameters!
+:xmp.
+:rev refid=59.
+:cgraphic scale='1.1'.
+:on3270.
+
+  [drive:][path]  DOWNSORT  [@filespec] [/H | /Q | /V]
+
+:off3270.
+:ecgraphic.
+:exmp.
+:erev refid=59.
+.*
+:dl tsize=12 termhi=2.
+:dt.@filespec
+:dd.The character '@' followed by a complete
+:hp2.file specification:ehp2. of the
+:hp2.Downsort configuration file:ehp2.
+(see :hdref refid=hcfg. for details).
+This file will be used to specify processing parameters.
+:p.NOTE: The specification of a configuration file is mandatory when the
+file AREA.DAT is not in the default directory when running Downsort.
+:p.Default: Downsort.CFG in current default directory.
+.*
+:dt./H /Q /V
+:dd.Operating mode
+:ul compact.
+:li.H&rbl.-&rbl.:hp4.H:ehp4.elp:  display screen with essential information
+about running Downsort, such as the command syntax.
+In that case the program will not undertake any other action.
+:li.Q&rbl.-&rbl.:hp4.Q:ehp4.uiet:  display only start and finish-message,
+and error messages which prevent the program from proceeding normally.
+:li.V&rbl.-&rbl.:hp4.V:ehp4.erbose:  display a lot of progress messages.
+:eul.
+If neither -Q nor -V is specified, than the number of console messages
+will be 'intermediate': more than -Q, but less than -V.
+:p.Default: none
+.*
+:edl.
+.* --------------------------
+:h2 id=hcfg.Configuration file Parameters
+:p.All processing options are specified in the configuration file.
+The parameters are only mentioned here for completeness,
+see :hdref refid=acfg. for a documented specification sample
+of a configuration file.
+.* -----------
+:h3.Parameters with global scope
+:p.The parameters below influence the execution of Downsort,
+or have impact on :hp2.every:ehp2. list (if it is applicable for that
+list).
+:ul compact.
+:li.File Specification of the MAXIMUS CBCS file 'AREA.DAT'.
+:rev refid=59.
+:li.Area selection by name
+:li.Area and File selection by 'cumulative' privilege and/or Maximus'
+key/lock
+:li.Explicit file exclusion
+:erev refid=59.
+:li.Sorting order of areas
+:li.List title with BLOCK-characters.
+:li.Pre-titles, Sub-titles and Bottom-lines in 'text' format
+:li.Descriptive text of orphans, files without a description
+and files for which an entry is found in FILES.BBS, but could not
+be found in the corresponding download directory.
+:eul.
+.* -----------
+:h3.Parameters with local scope
+:p.The parameters below are sub-parameters of the xxxFileList keyword.
+:ul compact.
+:rev refid=59.
+:li.List privilege
+:li.Userkeys for a list
+:erev refid=59.
+:li.Alternate output filename (in stead of the default Downsort).
+:li.Directory for the :hp2.output:ehp2. FILES.BBS-lists
+:li.Maximum number of file entries in NEW- and BBS-list
+:li.File-entry sort sequence (filename or date).
+:li.Wrap or Truncate long file descriptions, and Indentation of continuation
+lines.
+:li.Title Font selection.
+:li.Suppression of privilege indications.
+:li.Include textfile in NEW-, ALL-, IPF- and GBL-lists, and in FILES.bbs.
+:eul.
+:rev refid=59.
+:p.Downsort can generate any number of lists in a single run.
+If you are clever with Maximus key/lock manipulations, you will master
+Downsort quickly to make the proper selections.
+:erev refid=59.
+:p.A sample configuration file is provided.
+A listing of this file is imbedded as :hdref refid=acfg..
+It contains a complete specification with comments on:
+:ul compact.
+:li.which options are available
+:li.how to specify the options
+:eul.
+:p.Read and modify the file as you like.
+Copy the sample file to a save place before you start modifying the
+original Downsort.CFG!
+.* ---------------------------------
+:h2.Compiling the IPF lists
+:p.IPF-lists have to be processed by the Information Presentation
+Facility Compiler (IPFC).
+This compiler is part of the IBM Programmers Development Toolkit version
+1.2/1.3.
+For the IP2-list the IBM OS/2 2.0 or 2.1 Toolkit is needed.
+The following command has to be issued:
+:xmp.
+    IPFC  Downsort.IPF  /INF
+:exmp.
+:p.The option "/INF" is needed to obtain a VIEWable file, if not specified
+a .HLP file will be generated.
+Be sure to have the file Downsort.BMP in your current default directory, or
+in DPATH, as this will be imbedded by the IPF-compiler.
+The result of the compilation is a file Downsort.INF, which can be VIEWed
+with the following command:
+:xmp.
+    VIEW  Downsort
+:exmp.
+:p.The names "Downsort", "IPF" and "INF" are used here as sample,
+actually the filename depends on the specification in the Downsort
+configuration file, the extensions are the IPFC defaults.
+:p.If VIEW gives garbled columns and hardly readable block-titles,
+then it is most likely that you did not install (or removed) the
+standard fonts that are delivered with OS/2.
+Start the 'control panel utility', select 'installation', 'add fonts'.
+Specify in the 'from'-field C&colon.\OS2\DLL (see HELP of control panel).
+Now choose at least 1 non-proportional font.
+:note.IPFC has a number of restrictions that you may encounter, especially
+when you try to compile large lists:
+:ul compact.
+:li.A "Page is too big" message, generally resulting in other errors or
+warnings to appear as well, means that the 16000 words limit is exceeded.
+A file may not contain more than 16000 :hp2.different:ehp2. items
+(character strings between blanks or punctuation marks).
+There is nothing else you can do than make the list smaller
+(see :hdref refid=select. for suggestions).
+Sometimes a TRAP 000D occurs with very big lists if you ignore these
+error messages.
+:li.Sometimes also "invalid nesting of &colon.cgraphics tag" is
+displayed.
+Just ignore these!
+:eul.
+.* =====================================================
+:h1 id=sampl.Sample of Getting organised
+:p.Assume you are runnung MAXIMUS with BinkleyTerm as front end mailer.
+Suppose you make a distinction for file-requestors between Unknown, Known
+and Password-Protected (e.g. corresponding to Disgrace, Normal and
+Privileged MAXIMUS users).
+.* ----------------------------------------------
+:h2.Downsort
+:rev refid=59.
+:p.Your downsort.cfg file might contain among others the following
+specifications:
+:xmp scale='1.1'.
+  BBSFileList  p     3W
+  NEWFileList  d     2m
+  NEWFileList  n     2m
+  NEWFileList  p     2m
+  ALLFileList  d
+  ALLFileList  n
+  ALLFileList  p
+  OKFileList   p
+  OKFileList   n
+  OKFileList   d
+:erev refid=59.
+:exmp.
+:p.This specification will produce the following lists:
+:ul.
+:li.Downsort.BBS with the last three weeks additions to your system, for
+users of category Privil.
+Note: Users with a lower privilege will actually see a shorter list if the
+file contains Privil entries, since each line contains a privilege control
+sequence.
+:li.For file requests of the magic filename NEWFILES a list of the last 2
+months additions to your system.
+:ul compact.
+:li.Downsort.N&tilde.D for UNKNOWN file-requestors
+:li.Downsort.N&tilde.N for KNOWN file-requestors
+:li.Downsort.N&tilde.P for Password Protected file-requestors
+:eul.
+:p.Note that each NEW-list contains only the most recent files, but the
+contents will generally not be quite the same (depending on your privilege
+strategy).
+:li.For file requestors of the magic filename FILES a list,
+a list with all files
+(with optional titles via Downsort.CFG specifications):
+:ul compact.
+:li.Downsort.A&tilde.D for UNKNOWN file-requestors
+:li.Downsort.A&tilde.N for KNOWN file-requestors
+:li.Downsort.A&tilde.P for Password Protected file-requestors
+:eul.
+:p.Note that each list is a complete list of what is available to the user
+of the specific privilege class, but your system will generally contain more
+files than listed for UNKNOWN and KNOWN users!
+:li.For your mailer you'll have:
+:ul compact.
+:li.Downsort.O&tilde.D for UNKNOWN file-requestors
+:li.Downsort.O&tilde.N for KNOWN file-requestors
+:li.Downsort.O&tilde.P for Password Protected file-requestors
+:eul.
+:eul.
+:p.In general: files, which the requestor is not supposed to know about
+due to his privilege status, will not be on his/her list!
+:note.The counters on top of the lists indicate what your system has
+available in total (including higher privileges), so a clever
+user/file-requester may come up with the question how that is possible:
+explain that he/she has to earn a higher privilege level!
+.* ------
+:h2.BinkleyTerm
+:p.In Binkley.Cfg you should specify for requests of FILES:
+:xmp scale='1.1'.
+  Avail        Downsort.A&tilde.d
+  KnownAvail   Downsort.A&tilde.n
+  ProtAvail    Downsort.A&tilde.p
+:exmp.
+:p.Furthermore you need to specify different OKFILEs, for example:
+.cp 5
+:rev refid=59.
+:xmp scale='1.1'.
+  OKFile       Downsort.O&tilde.d
+  KnownReqList Downsort.O&tilde.n
+  ProtReqList  Downsort.O&tilde.p
+:exmp.
+:erev refid=59.
+.cp 16
+:p.In each of the appropriate filerequest authorisation files you should
+specify the appropriate file-spec:
+:xmp.
+:cgraphic scale='1.1'.
+:on3270.
+
+ ÉÍÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ»
+ º       in: º OKFile       º KnownReqList  º ProtReqList   º
+ º           º (Download.N) º (Download.K)  º (Download.P)  º
+ º for:      º              º               º               º
+ ÌÍÍÍÍÍÍÍÍÍÍÍÎÍÍÍÍÍÍÍÍÍÍÍÍÍÍÎÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÎÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¹
+ º .....     º .........    º ...........   º  ........     º
+ º @NEWFILES º Downsort.N&tilde.d º Downsort.N&tilde.n  º  Downsort.N&tilde.p º
+ º @FILES    º Downsort.A&tilde.d º Downsort.A&tilde.n  º  Downsort.A&tilde.p º
+ º .....     º .........    º ...........   º  ........     º
+ ÈÍÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¼
+:off3270.
+:ecgraphic.
+:exmp.
+:p.This will result in sending of the appropriate NEW-list to every
+requester of the magic filename: NEWFILES.
+If you use the second magic filename, then the Avail-lines in
+Binkley.Cfg are not needed, and you might prefer this way.
+:p.Of course if the privilege level of all download area's is the same,
+this construction is not needed,
+but in that case it is unlikely that you have specified KnownAvail and
+ProtAvail!
+:p.Downsort may create a set of OK-files for you.
+The privilege system of MAXIMUS CBCS is used to select the download
+paths in this list.
+.* ===============================================
+:h1.Packaging
+.* ---------------------
+:h2.Availability
+:p.The most recent version of Downsort is always downloadable and
+file-requestable from Bulletin Board "PC-Square" of the Dutch IBM
+employee PC club.
+Search or request DWNSRT??.* to be independent of the version and
+compression method!
+:p.FIDO-net address:  2&colon.512/4; phone:  31-79-424107 (USR HST-DS).
+:rev refid=59.
+:p.Downsort is originally distributed in area FWBBS of the Fernwood
+collection, and may also be distributed via SDSMAX.
+:erev refid=59.
+:p.There is a fair chance you may find a recent version on one of
+the other bulletin boards, listed in :hdref refid=ause..
+:p.Downsort is distributed in 2 archives:
+:ul.
+:li.A file "DWNSRTxy.ZIP", containing all material you need to run
+Downsort, including documentation, formatted for browsing or printing
+(formfeed is the only printer-control).
+:li.A file "DWNSRSxy.ZIP", containing all SOURCE material.
+:eul.
+:note.'xy' is the version indication,
+for example DWNSRT&VERSION.&SUBVERS..ZIP is the version
+&VERSION..&SUBVERS. runtime package.
+.* -----------------
+:h2.RUN-time material
+:dl tsize=20 termhi=3 compact.
+:dt.WHATSNEW.&VERSION.&SUBVERS.&SUFFIX.
+:dd.Summary of amendments to version &VERSION..&SUBVERS. of Downsort.
+:dt.DOWNSORT.EXE
+:dd.Execution module for OS/2 and DOS (Family Application)
+:dt.DOWN386.EXE
+:dd.32-bits execution module for OS/2 (2.0 and higher).
+:dt.DOWN386.ICO
+:dd.ICON file for DOWN386.EXE.
+:dt.DOWNSORT.DOC
+:dd.Documentation (this file!).
+:dt.DOWNSORT.CFG
+:dd.Sample configuration file.
+This file contains comment lines with extensive instructions how to
+specify the parameters in the file.
+:dt.DOWNSORT.HDR
+:dd.Sample BBS-list header.
+You may use this header, which is only imbedded in the BBS-list,
+to imbed text and/or MECCA-sequences.
+A good candidate for the latter would be &lbrk.onexit&rbrk.,
+which translates to &caret.OFpath.
+See the sample Downsort.HDR file!
+:dt.DOWNSORT.TRL
+:dd.Sample BBS-list trailer.
+:dt.DOWNSORT.BMP
+:dd.Bitmap for the IPF-list, to be included by the IPF compiler.
+:dt.DOWNSORT.INC
+:dd.Sample Include-file for the reports, referenced in Downsort.CFG.
+:dt.DOWNSORT.MAG
+:dd.Sample list of magic names to be included in OKFile(s).
+See BinkleyTerm documentation for details of its format and contents.
+:dt.HPFSDATE.EXE
+:dd.Program to display all three timestamps of a file on an HPFS volume,
+and optionally reset the CREATION date to LASTWRITE date
+(helpful after moving or copying of files).
+Start the program without options to display command syntax and help.
+A 32-bits version for OS/2 2.0+ is included with the name HPFSD386.EXE.
+:dt.PACKING.LST
+:dd.The actual contents of the package (produced with PKUNZIP -V),
+added to the ZIP-file after this was created with the foregoing files
+of this archive.
+This gives at least some authentication!
+:edl.
+.* ---
+:h2.Source material
+:dl tsize=20 termhi=3 compact.
+:dt.DOWNSORT.C
+:dd.Mainline.
+:dt.DOWNCOL.C
+:dd.Data collection functions.
+:dt.DOWNFNT.C
+:dd.Font definition and formatting functions.
+:dt.DOWNPAR.C
+:dd.Processing functions for commandline and Downsort.CFG parameters.
+:dt.DOWNRPT1.C
+:dd.Functions for NEW-, BBS- and EMI-list.
+:dt.DOWNRPT2.C
+:dd.Functions for the IPF-lists.
+:dt.DOWNRPT3.C
+:dd.Functions for the SYSOP-oriented lists, like ORPhan-, OK-, and
+DUPlicate-lists, as well as FILES.BBS files.
+:dt.DOWNRPT4.C
+:dd.Functions for the ALL- and GBL-lists.
+:dt.DOWNSRV.C
+:dd.Miscellaneous services functions.
+:dt.DOWNVARS.C
+:dd.Constants and global variables.
+:dt.DOWNSORT.H
+:dd.Header file, with external definitions of global variables.
+:dt.DOWNFPRO.H
+:dd.Common (global) function prototypes.
+:dt.DOWNSORT.SCR
+:dd.Unformatted documentation file.
+This file includes formatting tags in BOOKMASTER style for printing on
+whatever devices are supported (like IBM page printers).
+This format is compatible and can be formatted on an IBM host system
+with DCF (SCRIPT) as well.
+The file can also processed by the IPF-compiler (just ignore the
+warnings and error-messages!).
+:dt.DOWNSORT.DEF
+:dd.LINK definition file for OS/2 (1.3 and 2.0+)
+:dt.DOWN386.MAK
+:dd.MAKE file for DOWN386.EXE with OS/2 2.1, C/C++ Tools Version 2 and
+OS/2 2.1 Toolkit.
+:dt.DOWNSORT.MAK
+:dd.MAKE file for DOWNSORT.EXE OS/2 1.3, MS C-compiler 6.00a.
+The program development toolkit (OS/2 1.2/1.3) is needed when using IBM C/2
+1.1 compiler.
+:dt.PACKING.LST
+:dd.The actual contents of the package (produced with PKUNZIP -V),
+added to the ZIP-file after this was created with the foregoing files
+of this archive.
+This gives at least some authentication!
+:edl.
+.* --------------------------
+:h2 id=inst.Installation
+:p.With the following directions you should be able to setup and run
+Downsort in a very short time.
+:ol.
+:li.Make a separate directory for Downsort, and make it the current
+default directory every time you run Downsort.
+The separate directory is a recommendation, not a requirement!
+:li.Copy the files Downsort.EXE and Downsort.CFG
+from the Downsort package into this directory.
+:li.Modify (edit) the file Downsort.CFG to specify your environment and
+list requirements.
+The sample file contains comments to help you with this process.
+Most specifications are obvious.
+AreaDat is the most important parameter:
+Downsort won't do anything useful thing if it cannot find this MAXIMUS
+file.
+See :hdref refid=acfg. for a printed sample.
+:li.You may give Downsort a first shot by just using its name
+on the commandline, with the command parameter -H.
+This will show a brief HELP-screen with the possible commandline
+parameter specifications.
+:li.All reports will be created in the Downsort directory
+(unless you specified 'fpath' for the FILES.BBS output).
+Browse the lists to see if you like the contents and titles, and modify
+the CFG-file to your convenience.
+:eol.
+.* -----------------------------
+:h2.Dependencies and restrictions
+:ul.
+:li.Applies to MAXIMUS CBCS 2.0
+:li.Requires OS/2 or DOS 3.0+.
+:li.To convert the IPF-list into VIEW-able format, the IPF-Compiler of the
+OS/2 Program Development Toolkit is required (for the IP2-list the
+corresponding OS/2 2.0 or 2.1 version of this compiler)
+:li.The input FILES.BBS files are assumed to contain only filename.ext
+(the regular 8.3 format, no support for OS/2 HPFS extended format),
+the remainder of the line is considered as file description.
+The filename should be left-aligned (start in position 1).
+:p.If a privilege modifier (&caret.Px) is encountered in FILES.BBS
+then 'x' will become the privilege of all subsequent files (it assumes
+&caret.Px on a SEPARATE line, the REST OF THE LINE IS IGNORED!).
+Heading, comments and blank lines in FILES.BBS are ignored,
+unless /K is specified on the FilFileList line of Downsort.Cfg.
+In that case comments following line 8 (the standard header created by
+Downsort) or headerlines from a previous run are preserved.
+The modified privilege might be higher (generally the case) or lower
+than the area-privilege.
+:eul.
+.* -----------
+:h2 id=perf.Storage and Performance
+:p.As a rough estimate of the memory requirements of Downsort,
+use sum of the following elements:
+:ul.
+:li.Program: about 100KB
+:li.Each area: 300 Bytes
+:li.Each file: 48 Bytes for each download file (excluding file
+descriptions and excluding orphans if no orphan-list requested)
+:li.The sum of the file description texts (average 80 bytes/file?)
+:li.The sum of the comments in FILES.BBS if -K option specified
+:eul.
+:p.If you hit a memory shortage (only applicable wiht DOS!), then you could
+do one or more of the following:
+:ul compact.
+:li.Use AreaEXclude or AreaINclude to make a selection of groups
+(for example make separate OS/2 and a DOS file-lists).
+Downsort will not collect information of 'excluded' areas.
+:li.If you have many orphans: get rid of them or do not generate an
+orphan report.
+Downsort releases orphan-memory during the data collection phase as soon
+as it knows that a file is an orphan.
+:li.If you have many comment-lines in your FILES.BBS: do not specify /K
+for ALL- and IPF-lists AND do not activate the FILFilePath parameter in
+Downsort.Cfg.
+Downsort will ignore comments in FILES.BBS when it does not need them
+for reporting.
+:eul.
+.* -------------------------------
+:h2.Problems
+:p.Although I try to prevent the cause of them, there are some
+unresolved problems in the current version of Downsort:
+:ul.
+:li.Currently no unresolved problems are known.
+:eul.
+.* ---------------------------------------
+:h2.Wishlist
+:p.Downsort is not finished!
+There are a number of wishes and requirements of users and myself to
+include in future releases.
+I list them below not in any particular order, but some seem to be more
+important than others, that differs from SYSOP to SYSOP.
+And some are more easy to implement than others, which depends mainly
+on the author!
+Some wishes don't even make it to be listed below and are implemented
+immediately!
+:ul compact.
+:li.Follow the MAXIMUS development (changing AREA.DAT and other
+structures), and support several versions simultaneously.
+:li.User-configurable options for:
+:ul compact.
+:li.week and month indicators
+:li.indicator for continuation lines in wrapped descriptions
+:li.&lbrk.selectable&rbrk. MECCA control in FILES.BBS
+:eul.
+:li.Logging to file in stead of stdout to obtain a history file
+of Downsort usage.
+:rev refid=59.
+:hp2.(may be done wiht redirection!).
+:erev refid=59.
+:li.Support for use of 'barricaded' areas.
+:li.List with the format of IPF-list but the contents of NEW-list.
+:li.Automatic removal of 'bad' files (like .BAK-files, obsolete files,
+files that are not in FILES.BBS), maybe move them to a special
+BAD&us.FILE directory.
+Entries in FILES.BBS should be removed accordingly.
+:eul.
+:p.Remember: Was there ever a time that all your wishes were fulfilled?
+That was the most boring time of your life, wasn't it?
+.* ===================================================================
+:h1.Internals
+.* ------
+:h2.Development Environment
+:p.The family-version of Downsort (for OS/2 1.3 and DOS) is compiled with
+MicroSoft C compiler version 6.00a, with the IBM OS/2 Programming Tools and
+Information (generally called the OS/2 Toolkit) under IBM OS/2 Extended
+Edition 1.3 as COMPACT memory model.
+The generated code is at 80286 level (Compiler option /G2), since I
+believe that only very few Bulletin Boards do use an XT these days.
+:p.The 32-bit OS/2 2.0+ only version of Downsort is compiled with IBM
+C/C++ Tools version 2 and the OS/2 2.1 Toolkit.
+:p.There is only a single set of source files.
+A compiler variable takes care of the selection between 1.3 and 2.1
+calls where necessary.
+:p.Downsort has been tested for MAXIMUS CBCS 2.0, with the following
+Operating Systems:
+:ul compact.
+:li.IBM OS/2 versions 1.3 and 2.1
+:li.IBM PC/DOS version 6.1
+:eul.
+.* ---------------------------
+:h2.Program Organisation
+:p.The program is organised as follows:
+:ul.
+:li.Initialisation:
+:ul compact.
+:li.Read configuration file.
+:li.Process commandline parameters.
+:eul.
+:p.Commandline parameters may override configuration file parameters.
+:li.Read AREA.DAT file to collect download pathnames
+(only of those area's that will participate this time).
+:li.For each file-area with a privilege not exceeding any list-request:
+:ul.
+:li.Read subdirectory (with find-file-first/next function).
+Take only Normal files: ignore directory entries, Hidden and System
+files and volume labels.
+Also ignore files with the following specifications: FILES.*,
+*.BAK, DIR.?BS and SYSTEM*.?BS.
+:li.For all regular file-entries found in subdirectory:
+:ul compact.
+:li.Get filename.ext, attribute, date, time, size.
+:li.Get file-description from FILES.BBS file.
+The path to the FILES.BBS file is (1) obtained from the "ListFile"
+specification in MAXIMUS AREA.DAT file, or (2) if not specified from the
+"DownLoad" specification (among the download files).
+:li.Add files with explicit path specifications.
+:li.Get file privilege 1) from area, 2) from FILES.BBS file if higher.
+:li.When no orphan reporting is required, then drop orphan entries
+area-by-area.
+:eul.
+:eul.
+:li.For the ORP-list:
+:p.If any orphan found, and the orphan-report is requested, create the
+orphan report, with the file-entries sorted on (1) area and (2)
+filename.
+:li.For the BBS-list:
+:ul compact.
+:li.Sort the files primarily on descending file-timestamp (and secundary
+on file-name and area-code).
+:li.Resort the first files on filename if requested.
+:li.Create output file for sorted list of filenames, -descriptions, etc.
+The file is placed in the current subdirectory (which generally will be
+the MAXIMUS directory) with the name Downsort.BBS.
+:li.Copy a headerfile (for a customised MAXIMUS bulletin).
+:li.Put files in formatted outputfile (filename, area#, date, size,
+description), but only if description is found in FILES.BBS.
+Skip files with privilege higher than commandline (or default)
+parameter.
+Precede each line with a privilege-control sequence (&caret.PLx string)
+so that MAXIMUS users below the specified max-priv-level do effectively
+see only the files they can download.
+:li.Include a trailerfile in the outputfile (for a custimised Bulletin).
+:li.Report non-listed files on standard output device (which might be
+re-directed to printer or disk-file).
+:eul.
+:li.If requested, put the above file collection in Downsort.N&tilde.p
+with similar contents and layout as Downsort.BBS, but without
+BBS-control sequences, and without including a header and trailer file.
+Produce a list for the default privilege (HIDDEN), or one for each
+specified privilege.
+:li.If requested, re-sort files on area and then filename or date, and
+create Downsort.A&tilde.p, containing all files (respecting the
+privilege restrictions!).
+Area's with zero files within the applicable privilege limit will not
+be listed at all (will seem non-existing!).
+Produce a list for the default privilege (SYSOP), or one for each
+specified privilege.
+:p.At the end of the list, an area summary report is generated.
+:li.If requested, re-sort files on filename or date only, and create
+Downsort.GBL.
+:li.If requested, re-sort files on area, privilege and filename, and
+create for each area a FILES.BBS-type of file.
+:li.If requested generate a list of probably DUPlicate files.
+:li.If requested generate a list of download-paths: the OK-file
+(not: it will contain only the paths that participated in this run.
+:eul.
+:p.NOTE: the program firstly reads a directory for existing files
+(not Hidden- or System-files, and not Subdirectory or Volumelabel),
+and then reads FILES.BBS to assign a description to each file.
+This means:
+:ul compact.
+:li.If more than 1 matching file-specification in FILES.BBS of the
+involved area is found (note that wild-card specifications in FILES.BBS
+are supported!), than the :hp2.first matching description:ehp2. from
+FILES.BBS will appear in the lists
+(new in version 4.5, was 'last' in previous versions of Downsort).
+:li.Files for which no description is found in FILES.BBS will get
+"---no description available---"
+(or the replacement string you specified in Downsort.CFG)
+in the user reports.
+:li.Files for which no matching filename in FILES.BBS is found will
+be listed in the Orphan report (Downsort.ORP).
+:p.Files for which there is an entry in FILES.BBS, but a corresponding
+file is not found in the directory will be reported as 'offline'.
+:p.In special cases this might become a very large list.
+For example if you collect files in a single directory for different
+area's, all the files of 'the other' areas are reported as orphan.
+This will happen for every area, so each file might even be reported
+many times as orphan!
+Since the Orphan-list is now optional (from version 5.0 on), this list
+can be suppressed.
+:p.Filenames of Orphans appear only in the other reports when the
+FileList request explicitly specifies the Hidden privilege.
+:eul.
+.* -----------
+:h2.Main Data Organisation
+:h3.Area and File Information
+:p.Data structure for access to file information via:
+:ol compact.
+:li.array of file-pointers (for file-sort!)
+:li.pointerchain in file-info structures
+:li.file structure contains pointer to file-description
+:li.file-structure contains pointer to area-information
+:li.Array of area-information
+:eol.
+:p.The organisation is shown in the following figure.
+:xmp.
+:cgraphic scale='1.1'.
+:on3270.
+
+ÉÍÍÍÍÍÍ»
+º  dm  º
+ÈÍÍÍÍÍÍ¼
+    ³         Array of pointers to structures with file info
+    ³      ÉÍÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÍÍÍÍÍÍÍ . . . ÍÍÍÍÍÍ»
+(1) ÀÄÄÄÄÄ>º *file&lbrk.0&rbrk.  º  *file&lbrk.1&rbrk.  º *file&lbrk.2&rbrk.                 º
+           ÈÍÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÍÍÍÍÍÍÍ . . . ÍÍÍÍÍÍ¼
+                 ³           ³            ³
+(2)              v           v            v
+ÉÍÍÍÍÍÍ»     ÉÍÍÍÍÍÍ»     ÉÍÍÍÍÍÍ»     ÉÍÍÍÍÍÍ»
+º  ca  º ÄÄ> º next º ÄÄ> º next º ÄÄ> º next º ÄÄ> . . .
+ÈÍÍÍÍÍÍ¼     ÌÍÍÍÍÍÍ¹     ÌÍÍÍÍÍÍ¹     ÌÍÍÍÍÍÍ¹
+ (first-     º file-º     º file-º     º file-º
+ element)    º info º     º info º     º info º    . . .
+             º &lbrk.0&rbrk.  º     º &lbrk.1&rbrk.  º     º &lbrk.2&rbrk.  º
+             ÈÍÍÍÍÍÍ¼     ÈÍÍÍÍÍÍ¼     ÈÍÍÍÍÍÍ¼
+                 ³ ³         ³  ³wildcards³ ³
+                 ³ ÀÄÄ¿      ³  ÀÄÄ¿      ³ ³
+                 ³    ³      ³ ÚÄÄÄÄÄÄÄÄÄÄÙ ³
+(3)              v    ³      v v   ³ ÚÄÄÄÄÄÄÙ
+             ÉÍÍÍÍÍÍ» ³   ÉÍÍÍÍÍÍ» ³ ³
+             ºfile- º ³   ºfile- º ³ ³(files of
+             ºdescr º ³   ºdescr º ³ ³ same area)   . . .
+             ÈÍÍÍÍÍÍ¼ ³   ÈÍÍÍÍÍÍ¼ ³ ³
+                      ³            ³ ³
+(4)                   v            v v
+              ÉÍÍÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÍÍ . . . ÍÍÍÍÍÍ»
+(5) ÚÄÄÄÄÄÄÄÄ>º  area&lbrk.0&rbrk.   º   area&lbrk.1&rbrk.   º                     º
+    ³         ÈÍÍÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÍÍ . . . ÍÍÍÍÍÍ¼
+    ³              array of structures of area information
+ÉÍÍÍÍÍÍ»
+º area º
+ÈÍÍÍÍÍÍ¼
+:off3270.
+:ecgraphic.
+:exmp.
+:p.Schematic overview of Downsort's in-storage database.
+:note.The area-array cannot be sorted itself: this would invalidate the
+pointers in the file-information records!
+.* ---
+:h3.Block fonts
+:p.The block character image is basically a 10x7 matrix
+(10 vertical and 7 horizontal 'pixels').
+The pixel-array takes two rows at a time, so that each character
+can be represented with 5 rows of 7 horizontal 'double-pixels'.
+Each pixel is displayed as a solid block.
+:xmp.
+:cgraphic scale='1.1'.
+:on3270.
+         1 2 3 4 5 6 7
+        ÉÍËÍËÍËÍËÍËÍËÍ»
+        º-º-º-º-º-º-º-º   line 1    (lower + upper)
+        ÌÍÎÍÎÍÎÍÎÍÎÍÎÍ¹
+        º-º-º-º-º-º-º-º        2    (lower + upper)
+        ÌÍÎÍÎÍÎÍÎÍÎÍÎÍ¹
+        º-º-º-º-º-º-º-º        3    (lower + upper)
+        ÌÍÎÍÎÍÎÍÎÍÎÍÎÍ¹
+        º-º-º-º-º-º-º-º        4    (lower + upper)
+        ÌÍÎÍÎÍÎÍÎÍÎÍÎÍ¹
+        º-º-º-º-º-º-º-º        5    (lower + upper)
+        ÈÍÊÍÊÍÊÍÊÍÊÍÊÍ¼
+:off3270.
+:ecgraphic.
+:exmp.
+:p.Each line is represented by a structure of seven 3-bit fields
+Each 3-bit field represents a basic element:
+:xmp scale='1.1'.
+ value    char       description
+   0                 (blank)
+   1     &BOXBOT.           lower half
+   2       &BOXTOP.         upper half
+   3         &BOX.       lower+upper halves
+   4       &box34.         gray pattern
+   5     &BOXLEFT.           left part of upper and lower half
+   6       &BOXRIGHT.         right part of upper and lower half
+   7         &box14.       gray pattern
+   8      &box12.          gray pattern for not-supported characters
+:exmp.
+:p.The pitch is variable ('proportional font': a variable number of
+horizontal pixels).
+Four fonts are provided with different character-image and size:
+:ol compact.
+:li.6x5 (three lines of max 5 characters)
+:li.10x7 (five lines of max 7 characters)
+:li.8x7 (four lines of max 7 characters)
+:li.10x7 (reverse video image of the 8x7 font)
+:eol.
+:p.The following characters are supported in block-fonts:
+:xmp.
+   UPPER case  A..Z
+   LOWER case  a..z  (but will be presented in UPPER case)
+   Digits 0..9
+   _  *  |  .  [  ]  (  )  /  \  -  and space
+   Not-supported characters are displayed as blank.
+   The '~'-character (tilde) represents a full width space,
+   the '`'-character (reverse quote) a half width space.
+:exmp.
+.* --------------------------------
+:appendix.
+:h1 id=ahis.History of changes
+:p.The paragraphs below show a brief history of changes in Downsort
+(most recent revisions on top of list!).
+:p.Downsort for MAXIMUS CBCS was developed from an OPUS equivalent
+(by the same author).
+Its pre-MAXIMUS history is not really important here and therefore has
+been removed.
+However the name Downsort has been maintained, so to prevent confusion,
+the version number is inherited (the last version for OPUS was 3.1).
+.*
+:h2.Version 5.9
+:p.:hp3.Please read also the commentlines marked '5.9' in Downsort.Cfg!:ehp3.
+:ul compact.
+:li.Considerable changes in parameter specifications:
+:ul compact
+:li.Support of most commandline:ehp3. parameters :hp3.removed:ehp2.!
+:li.Support for keywords 'MaxNewFiles' and 'TitleFont' in Downsort.Cfg
+also removed: use xxxFileList for individual specifications for each list.
+:li.Multiple 'xxxFileList' lines in Downsort.Cfg are supported now:
+:ul compact.
+:li.You may now specify as many xxxFileLists with the same(!) or different
+list types as you need.
+:li.Each xxxFileList, regardless of same or different list, will generate
+one and only one list according to its own set of parameters.
+:li.Only a single privilege is now accepted per xxxFileList line, but this
+may now be accompanied by 'userkeys'; specification in the form: p/kkk.
+:eul.
+:li.File sort sequence (GROUP-sort) added for NEWFileList: primary sort on
+area, then on filename.
+Each group will be preceeded in the list by a line with areaname and
+description.
+GROUP-sort works also for ORPHAN-lists, but is for all other lists synonym
+with ALPHA.
+:eul.
+:li.The contents of ALLFileList can now be limited by file-age, so it can
+be called a NEWFileList in the format of ALLFileList or vice versa.
+But the SUMMARY-report ignores the file age limitation!
+:li.FILES.BBS-files will be (re-)generated also when area does not contain
+any files.
+:li.Full support of Maximus' key/lock mechanism for filearea selection.
+Key-characters follow the xxxFileList privilege, separated with a slash,
+exactly the same as the area privilege specification in MAX.CTL.
+The privilege line in area heading will now also show the arealocks.
+:li.With the new keyword 'FileEXclude' you can define filespecs (with
+wildcards) of files which should not appear in any list.
+:li.Tired of the complaints about specification limits, I removed
+most of these.
+For example now unlimited number of title-lines, areaIN/EXclude strings,
+non-duplicate file extensions, xxxFileList lines, etc.
+:li.AreaINclude and AreaEXclude can now be used simultaneously.
+:li.Files with 'future' date will be excluded from NEW-, BBS- and EMI-lists
+(special feature for certain CDROMs!).
+:li.All block fonts now support same characterset (fonts 3 and 4 have been
+extended with the characters supported in fonts 1 and 2), and specification
+of block-font parameter now honored in all lists.
+Default font for all lists changed to 3.
+:li.Performance improvements with sorts on filedate, and during directory
+scan (the latter only of 32-bits version).
+:li.bugfixes:
+:ul compact.
+:li.Filedates beyond 2037(!) could cause empty BBS-, NEW- and EMI-FileLists.
+:li.No 'duplicates' with only case differences in short OKList anymore.
+:eul.
+:li.Downsort's companion program HPFSDATE (and the 32-bit version HPFSD386)
+can now reset the creationdate of files also in other than current working
+directory.
+:eul.
+.*
+:h2.Version 5.8
+:ul compact.
+:li.Now an 'unlimited' number of files is supported, dependent only of
+available memory (virtual memory under OS/2!).
+Limit was 16350 files!
+:li.Continuation lines of file descriptions can now be indented, for example
+to align text when download counter fields are used in the description.
+See Sample Downsort.Cfg file for details.
+:li.All filenames now translated to upper case and also reported in upper
+case in the lists.
+:li.Downsort's FILES.BBS 'header prefix' slightly changed for better screen
+presentation to online Maximus users.
+:li.Some cosmetic improvements in IPF-lists.
+:li.File size now reported in max 4 digits: KBytes or MBytes, depending on
+size, except in overviews.
+:li.Bug fixes:
+:ul compact.
+:li.Several problems with 32-bits version related to occurances of filenames
+with lower case characters solved by translating filenames to upper case.
+:li.Continuation lines in BBS-list will have now required privilege-prefix!
+:li.Comments from FILES.BBS now correctly and completely represented in
+ALL-list, even with AVAstrip active.
+:li.Explicit path specifications in FILES.BBS work now correctly.
+:eul.
+:eul.
+:note.This will be the last version with 'extended' commandline parameters.
+List specification parameters will disappear, specification of a
+configuration file and some others, like 'run quiet/verbose', will remain.
+.*
+:h2.Version 5.7
+:ul compact.
+:li.A 32-bit version (OS/2 2.0+ only) added to runtime package, no
+functional differences with the family version.
+:li.ICON file DOWN386.ICO added for the 32-bit version of Downsort.
+:li.Long areanames (8 characters) are now supported in all reports.
+:li.Changed naming convention of 'FILES.BBS' output files when area's
+with 'long' (more than 3 character) names are used.
+:li.The "FILES.BBS"-type of output (selected with FILFileList in
+Downsort.Cfg) now produces a slightly different header.
+Downsort recognises its own header and an included-file without
+'multiplication'-effects.
+:li.Explicit path specifications of files in FILES.BBS are now supported.
+As a consequence:
+:ul compact.
+:li.The long format of OK-FileList will contain this explicit path
+in stead of the filearea path.
+:li.It seems more appropriate to list the pathspec in the DUP-FileList
+rather than the file description.
+:eul.
+:hp2.Generic filenames (wildcard specifications) are NOT supported
+(yet)!:ehp2.
+:li.File size and date can be included in FILES.BBS output with the '-L'
+option on the FILFileList line in Downsort.Cfg.
+:li.A new keyword 'NonDupEXT' allows suppression of reporting a file as
+'duplicate' when it is a member of a pair of files with specified
+extensions.
+Example xyz.SDN and xyz.SDA can be excluded from DupFileList.
+:li.Doc-file now also included as provisional .INF file for OS/2 VIEW.
+:li.Improved Avatar stripping.
+:li.Bug fix for long 'new'-filelist periods (>32000 days).
+:li.Separation between progress signals (stdout) and error messages (stderr)
+and other 'internal' changes:
+:li.Preparations made to remove most commandline parameters.
+It has been redundant for a long time.
+Every Downsort specification on the commandline can also be made via
+Downsort.Cfg.
+Exception: Specification of a configuration file will remain possible!
+Good arguments may change this intention, so please object if I am
+overlooking something.
+:eul.
+.*
+:h2.Version 5.6
+:ul compact.
+:li.In stead of the regular OKFile format (path\*.*), there is now also
+an option (/L) to produce a LONG format of the OKFile, containing
+explicitly all files within privilege with complete file-specification
+(path\filename.ext).
+Useful for file-requests at systems with large directories, and
+especially with CDROM's.
+With this option in effect, the *.* entries will not be generated, so
+file requests are only honored with EXACT filenames: wildcard
+specifications do not work anymore!
+:li.Improved display of long areanames (>3 char) in ALL- and
+IPF-lists.
+:li.Avatar codes may be stripped from comment lines in reports.
+:li.Missing include-files are now only reported when running Downsort in
+-V(erbose) mode.
+:li.Some bug fixes (some of them causing Trap 000D under OS/2):
+:ul compact.
+:li.If 'downsort.cfg' not found, return code 2 is reported, and
+downsort.cfg now closed at end of file.
+:li.Output of FILES.BBS could be erraneous when also IP2-list selected.
+:li.Limit of 217 active area's now relieved (this limit was not
+documented!).
+:li.Improved handling of parameters of FILFilePath-line in the sample
+Downsort.Cfg file.
+Also the explanatory comments are revised.
+:eul.
+:li.'-'-character now precedes the formfeed character in newly created
+FILES.BBS files (version 5.6h+).
+:li.Downsort source is now compilable with IBM C-Set/2 compiler and IBM
+OS/2 2.0 toolkit to obtain a real 32-bit version for OS/2 2.0+.
+:eul.
+.*
+:h2.Version 5.5
+:ul compact.
+:li.Finally(!) a sort capability for area-sequence.
+Areas can now be presented in order of AREA.DAT ('K'eep original
+sequence), sorted on areaname ('A'lphabetically), sorted in
+alphanumeric ('G'roup) sequence or in order of areaINclude ('I').
+The group-sequence is useful with a popular naming convention whereby the
+areaname starts with one or more letters followed by one or more digits.
+Names starting with a digit will be sorted as if it were all numeric,
+and will be sorted accordingly.
+:li.NEW-, BBS-list and EMI-list (see below) can now also be limited in
+length by file-age (period specification in number of Days, Weeks or
+Months).
+:li.A new list-type introduced: EMI-list (new file EMIsions).
+I is a simple list, comparable to NEW-list.
+It has a more compact format, and gives also file-time and the file-size
+(in exact bytes).
+It is especially useful to generate messages with file arrivals
+over the last period (in combination with a period specification).
+:li.Readability improvements in IP2-list.
+:li.Documentation extended with sample output for new users of Downsort.
+:li.Some bug-fixes:
+:ul compact.
+:li.Compares of path- and area-names now case INdependent
+:li.Memory allocation error during collection of comments in FILES.BBS
+:li.Index out-of-range in report preparation phase
+:li.Processing of /K-option for areas with FILES.BBS but otherwise empty.
+:eul.
+:eul.
+.*
+:h2.Version 5.4
+:ul compact.
+:li.Inline comments in FILES.BBS will be reproduced now!
+When AND ONLY WHEN the /K option is specified for All- or IPF-list, or
+for FILFilePath, the original existing comments in FILES.BBS are
+copied into All- or IPF-list or newly created FILES.BBS files.
+So note: /K means now: Keep sequence of FILES.BBS
+:hp2.and Keep comments in FILES.BBS:ehp2. and other lists that support
+the /K option (ALL-, IPF and IP2-list).
+:note./K is now the default sort parameter for FILFilePath, so that you do
+not loose your comments accidently.
+:li.Downsort's interpretation of the meaning of 'orphan' changed a
+little: an 'orphan' is from now on defined as a file for which there is
+no description in any FILES.BBS of all areas pointing to the same
+directory.
+This may reduce improper(?) orphan-reporting by previous versions of
+Downsort considerably when you have physically a single large directory
+of which the files are grouped logically in different areas with separate
+FILES.BBS files.
+:li.Duplicate download directories in OK-files will be suppressed.
+:li.Area-summaries in ALL- and IPF-lists are again sorted alphabetically
+on area-name.
+:li.A check during the data collection phase on maximum supported file
+entries (16350) has been added to prevent problems when exceeding this
+limit.
+:li.Orphan entries in FILES.BBS are now preceeded with '&caret.PS' in
+stead of the unsupported '&caret.PH' (bug fix).
+:li.Some specific adaptations for version 2.0:
+:ul compact.
+:li.All files conforming to filespec 'FILES.*' will not be reported
+anymore.
+:li.Area code will be handled as 9 character string: area-name!
+But in some reports it will be truncated to the first 3 or 4 characters.
+:li.AreaINclude and AreaEXclude are used as 'prefix'.
+Area-name specifications will be treated as group-names:
+you can include or exclude groups of areas starting with the same
+characters.
+:li.The /b, /t, /bt or /tb flag in FILES.BBS will not appear in the
+lists, but only when it appears immediately after the filename.
+It is not stripped from FILES.BBS.
+:eul.
+:li.As experiment a new list has been added: IP2FileList.
+It is a copy if IPF-list, but uses some new formatting features offered
+by the IPF-compiler of the OS/2 2.0-beta toolkit (i.c. &colon.table.).
+The result is a faster generation, but above al a faster compilation
+and a better VIEW.
+VIEWing under OS/2 1.2 or 1.3 is still possible!
+:eul.
+.*
+:h2.Version 5.3
+:ul compact.
+:li.New report added: DUP-list, a simple list, for SYSOP-use only, that
+shows (possibly) duplicate fileNAMES over the area's (the file-extension
+is not considered in the comparison).
+:li.Another new report: OKFile in BinkleyTerm style.
+A list of download paths within privilege, with option to include magic
+names.
+:li.IpfFileList line in Downsort.Cfg now also allows specification of
+the IPF pagesize (maximum number of file-entries per VIEW 'page' or
+'part').
+:li.Progress signals streamlined, /Q is really silent now!
+:li.Fixed bug which caused Trap 000D under OS/2 (protection violation)
+under some rare conditions.
+The restriction that first area may not be empty or not contain only
+orphans has been removed with this change.
+:li.Support for MAXIMUS CBCS 1.00 removed: only version 1.02 is
+supported (and most likely 2.00 as well).
+:li.Downsort's change-history before version 5.0 removed from
+documentation.
+:li.Use of MicroSoft C Compiler 6.00a: more free memory for DOS users
+(also because of slightly improved program structuring).
+:eul.
+.*
+:h2.Version 5.2
+:ul compact.
+:li.Area selection is now possible within Downsort.
+Two new keywords are provided in Downsort.CFG:
+:hp2.AreaINclude:ehp2. to make reports for selected download area's,
+:hp2.AreaEXclude:ehp2. to omit area's from the reports.
+These keywords have only effect within the collection that would
+otherwise have been reported completely (restricted by AREA.DAT and
+report privilege).
+:li.FILES.BBS has now a peer relation with the directory in stead of
+being subordinate, in Downsort terms of course.
+Filenames and their description in FILES.BBS for which there is no
+corresponding file in the download directory, are now NOT ignored
+anymore.
+In stead the file is reported as 'offline' (on the columns for file-date
+and -size).
+You may replace the word 'offline' with an alternative text.
+:li.Bug repaired that caused some files to be treated as orphan under
+certain rare circumstances.
+And a correction of an error in 'end-of-line' test/search on several
+places.
+:li.As already 'promised' in 5.1, the Area-summary in ALL-list is now in
+order of AREA.DAT.
+:li.Reorganised the documentation to obtain a more logical sequence of
+subjects.
+Due to the growing number of options of Downsort, it became more and
+more difficult to see the trees through the wood.
+I added a number of paragraphs, especially for new users.
+It can be useful for YOU too!
+:eul.
+.*
+:h2.Version 5.1
+:ul compact.
+:li.Since the ORPhan report is optional (changed with version 5.0),
+orphan entries could and now will be removed from internal storage
+during the information collection phase of Downsort, but
+:hp2.only when no orphan-list is requested:ehp2.!
+This is especially useful for the situation where a single large
+directory contains the files of several area's, and whereby the file
+descriptions are contained in different FILES.BBS files.
+Normally this will result in reporting lots of duplicate orphans
+(according to the definition of 'orphan' in Downsort!).
+With this change memory utilisation is lower and sorting faster.
+:li.Another change of this kind: area's with a privilege exceeding
+any reporting privilege are not scanned anymore.
+Apart from lower memory utilisation, this might be useful for CDROM and
+slow disk(ette) systems.
+:li.The maximum number of Top-, Sub- and Bottom-Title lines has been
+extended to 20.
+:li.In addition all lists may now include a 'logo'-file with a new -I
+parameter on the individual report request specification (see sample
+Downsort.CFG).
+The file will be copied into the list without any editing or
+translation.
+It will be positioned directly behind the block-title and before the
+subtitle (if any).
+For example: you may include your BBS-logo or a picture of your system
+configuration, or anything else you want to tell the file-requestors of
+FILES, ALLFILES and/or NEWFILES.
+The IPF-list may also include IPF tags, with artwork, etc.
+It may even include other files itself!
+For FILES.BBS the contents of this Include-file will immediately follow
+the 'standard' header.
+:li.All block-fonts have now a new special character <`> (reversed
+quote), which will be 'printed' as blank (space) with :hp2.half:ehp2.
+the width of a normal character.
+This is useful for fine-alignment (e.g. manually centering) the
+BLOCK-title.
+:li.The chapter on 'titles and headers' has been rewritten to clarify
+the use of all title-options, :hp2.please read it!:ehp2..
+:li.In the SUMMARY of ALL- and IPF-lists the areas themselves
+are not sorted anymore, but presented in sequence of AREAS.CTL
+specification.
+This is based on the assumption that the file area's are in some kind of
+'natural' order in AREAS.CTL (or maybe it is time to do that now!).
+:li.Descriptions in FILES.BBS are now (again) aligned on column 14 of
+the FILES.bbs file records.
+:li.IPF-list again a little more user-friendly (linking of area's).
+:li.A number of improvements have been applied to the executiontime
+messages (when running in VERBOSE mode).
+:eul.
+.*
+:h2.Version 5.0
+:ul compact.
+:li.Improved IPF-formatting: more colorful, builtin word-wrapping of
+VIEW used for file descriptions (better VIEWable under OS/2 1.3!).
+It should now also compile without errors/warnings.
+Compiling (with IPFC) takes significantly longer however!
+:li.The IPF-list of large filearea's (>200 files) split into parts of
+200 files to prevent files being left unlisted.
+:li.Top-level title in FileLists shows file-count and byte-count as
+available within the privilege of the list.
+Thus it indicates what is really AVAILable to the user!
+Area-count omitted in lists which are not area-oriented.
+:li.ORPHAN report made OPTIONAL (must be specified to get it!).
+:eul.
+.*
+.* =============================
+:h1 id=ause.World-wide use of Downsort
+:p.PC-Square may be considered as the home-base of Downsort.
+The most recent version is always available there
+(file-requests honoured between 07:00 and 24:00 local time).
+:xmp keep=off.
+:hp2.
+PC-Square               Marcel Stikkelman     Zoetermeer, Netherlands
+2&colon.512/4                                       31-79-424107
+:p.Among many others, the following SYSOPs have reported running Downsort
+to make file collection lists for their users, and have a recent version
+available for download or file request.
+
+OS/2 TASK               Rene Carlsen          Skagen, Denmark
+2&colon.230/910                                     45-98-451070
+
+Paradigmus Maximus      John Taylor           London, UK
+2&colon.253/68                                      44-81-566-5393
+
+Ursus Fremens Rexx      Colin Adams           Preston, UK
+2&colon.255/121                                     44-772-828975
+
+Chat                    Lody Caenen           Koog aan de Zaan, Netherlands
+2&colon.280/801                                     31-75-704045
+
+Runnin' with the Devil  Stefano Sonzogni      Treviglio BG, Italy
+2&colon.331/205                                     39-363-303567
+
+Castillo Centro         Santiago Crespo       Madrid, Spain
+2&colon.341/24                                      34-1-5477210
+
+Fernwood                Emmitt Dove           Branford CT, USA
+1&colon.141/109                                     1-203-483-0348
+
+The Planet Earth        Joel Lambert          Bridgeport CT, USA
+1&colon.141/455                                     1-203-335-7742
+
+OS/2 Shareware          Pete Norloff          Fairfax VA, USA
+1&colon.109/347                                     1-703-385-4325
+
+Singing Bear            John Tarbox           Wilmington DE, USA
+1&colon.150/130                                     1-302-984-2238
+
+La Jungle BBS           Stephane Seguin       Quebec, Canada
+1&colon.163/116                                     1-819-595-4917
+
+The Choice BBS          Mark Woolworth        Las Vegas NV, USA
+1&colon.209/710                                     1-702-253-6527
+
+3M Australia            Graham Stair          Pymble, NSW Australia
+3&colon.711/409                                     61-2-498-9184
+
+Serendipity Inc         Poe Lim               Cowra, NSW Australia
+3&colon.623/630                                     61-63-41-1859
+.*
+.* HCC FIDO Groningen-1  Johan Schaaphok  Groningen
+.* 1:153/738             John Cathie      New Westminster, B.C. Canada
+.* 2:245/8               Peter Kaszanics                 , Germany
+.* 2:234/99              Iver Thuessen s                 , Denmark
+:ehp2.
+:exmp.
+:p.I have received reports from others.
+Too many for this list, which is just meant to point to a system
+in your neighbourhood(?).
+You may either logon to one of these boards, or perform a file-request
+of 'FILES' or 'ALLFILES' to get an impression of Downsort's
+capabilities.
+.* =============================
+:h1 id=lsmp.Sample Lists
+:p.Below follow a number of samples of list layouts and contents.
+Not shown are the BBS-, and IPF-lists, since these are screen- rather
+than paper-oriented, with their specific formatting and color settings.
+:p.The dates and sizes in these lists have been manipulated!
+.* ---------
+:h2.ALL-list
+:xmp keep=on.
+:on3270.
+
+ÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ
+ Ûßßßßßß   Û  º OS/2 - Fernwood - New Acquisitions
+ ÛÜÜÜÜÜ   ÜÛ  º Available: 143 files (0.0 MB)
+ ÛÛ       ÛÛ  º Privilege: Disgrace
+ ÛÛ       ÛÛ  º Newest: XLIST233.ZIP  3-22-91  (avail:  7-26-91)
+ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+Filename      Size   Date    Description
+ÄÄÄÄÄÄÄÄÄÄÄÄ ÄÄÄÄÄ ÄÄÄÄÄÄÄÄÄ ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+AAFONTS.ZIP     1K  3-22-91  Text from IBM regarding Anti-aliased Fonts.
+AFP_120.LZH     1K  3-22-91  Areafix 1.2 for OS/2.  Permits systems that do
+                             echomail with yours to change their complement of
+                             areas independently.
+:off3270
+:exmp.
+.* ---------
+:h2.GBL-list
+:xmp keep=on.
+:on3270.
+
+(Sun Jan 05 15:05) Available: 508 files (0 MB)
+                   Maximum privilege shown: Sysop
+                   Newest: BIGBRO.ZIP  3-22-91 (avail:  7-26-91)
+                   Date flag: new on this system since: * = 1 week, + = 1 month
+
+Filename       Area    Size   Date    Description
+ÄÄÄÄÄÄÄÄÄÄÄÄ ÄÄÄÄÄÄÄÄ ÄÄÄÄÄ ÄÄÄÄÄÄÄÄÄ ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+2COLDIR.ZIP        F3    1K  3-22-91  DoubleDir for OS/2
+2MONITOR.ZIP       F4    1K  3-22-91  Source and .EXE for running 2 monitors.
+:off3270.
+:exmp.
+.* ---------
+:h2.NEW-list
+:xmp keep=on.
+:on3270.
+
+(Sun Jan 05 16:14) Last 10 months newest of a total of 508 files (0 MB)
+                   Maximum privilege shown: Sysop
+                   Newest: BIGBRO.ZIP dd  3-22-91 (avail:  7-26-91)
+                   Date flag: new on this system since: * = 1 week, + = 1 month
+
+Filename       Area    Size   Date    Description
+ÄÄÄÄÄÄÄÄÄÄÄÄ ÄÄÄÄÄÄÄÄ ÄÄÄÄÄ ÄÄÄÄÄÄÄÄÄ ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+2COLDIR.ZIP        F3    1K  3-22-91  DoubleDir for OS/2
+2MONITOR.ZIP       F4    1K  3-22-91  Source and .EXE for running 2 monitors.
+8514.PAT           F4    1K  3-22-91  Patch to get 32x32 icons on 8514/a
+:off3270.
+:exmp.
+.* ---------
+:h2.EMI-list
+:xmp keep=on.
+:on3270.
+
+(Tue Jan 14 21:55) Last 44 weeks newest emissions
+
+--Filename-- --Date--  -Time-  -Bytes-  ---Description---
+DUMMY.DAT    10-11-91   9:45p       31  Dummy file for Downsort tests +
+             continuation line
+PSOS2.ZIP     3-22-91  11:46p        2  View OS/2 Information on PM like
+             Threads & Process, Memory used, and more.
+:off3270.
+:exmp.
+.* ---------
+:h2.FILES.BBS
+:xmp keep=on.
+:on3270.
+
+- Ûßßßßßß   Û  º OS/2 - Fernwood - New Acquisitions
+- ÛÜÜÜÜÜ   ÜÛ  º Available: 143 files (0.0 MB)
+- ÛÛ       ÛÛ  º Privilege: Disgrace
+- ÛÛ       ÛÛ  º Newest: XLIST233.ZIP  3-22-91 (avail:  7-26-91)
+-ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+-Filename      Size    Date     Description
+-ÄÄÄÄÄÄÄÄÄÄÄ ÄÄÄÄÄÄÄ ÄÄÄÄÄÄÄÄÄ ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+AAFONTS.ZIP   Text from IBM regarding Anti-aliased Fonts.
+AFP_120.LZH   Areafix 1.2 for OS/2.  Permits systems that do echomail . . . .
+:off3270.
+:exmp.
+:note.File date and size are provided dynamically by Maximus CBCS!
+.* ---------
+:h2.OKfile
+:h3.Short format (default)
+:xmp keep=on.
+@files G:\File\File01\allfiles.zip
+@avail G:\File\File01\allfiles.zip
+@newfiles G:\File\File01\newfiles.zip
+G:\File\Fernwood\*.*
+G:\File\Max\*.*
+:exmp.
+.*
+:h3.LONG format (-L)
+:xmp keep=on.
+@files G:\File\File01\allfiles.zip
+@avail G:\File\File01\allfiles.zip
+@newfiles G:\File\File01\newfiles.zip
+@DWNSRT55.ZIP G:\File\Fernwood\DWNSRT55.ZIP
+@DWNSRT56.ZIP G:\File\Fernwood\DWNSRT56.ZIP
+@MAXSRT10.ZIP G:\File\Max\MAXSRT10.ZIP
+@MAXSRT11.ZIP G:\File\Max\MAXSRT11.ZIP
+:exmp.
+.* ---------
+:h2.ORPhan list
+:xmp keep=on.
+:on3270.
+
+ÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ
+  Area    Filename      Date    FilePath
+ÄÄÄÄÄÄÄÄ ÄÄÄÄÄÄÄÄÄÄÄÄ ÄÄÄÄÄÄÄÄÄ ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+      F1 123R3UPD.ZIP  3-22-91  G:\File\Fernwood\
+      F1 4019DRVR.ZIP  3-22-91  G:\File\Fernwood\
+:off3270.
+:exmp.
+.* =============================
+:h1 id=acfg.Sample Configuration File
+:xmp keep=off
+:cgraphic scale='0.9'.
+:on3270.
+.im downsort.cfg
+:off3270.
+:ecgraphic.
+:exmp.
+:euserdoc.

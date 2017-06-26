@@ -1,0 +1,96 @@
+PKUNZIP of DOWNSORT version 5.9 should show: 
+
+PKUNZIP (tm) FAST!  Extract Utility  Ver 1.01-OS/2 Prot Mode  7-21-89
+Copyright 1989 PKWARE Inc.  All Rights Reserved.  PKUNZIP/h for help.
+
+Searching ZIP: DWNSRS59.ZIP - ! 
+               ษอออออออออออออออออออออออออป 
+ษออออออออออออออน  Downsort  Version 5.9  ฬออออออออออออออป 
+บ              ศอออออออออออออออออออออออออผ              บ 
+บ   MAXIMUS CBCS DOWNload file SORT and list utility    บ 
+บ         Family application for OS/2 and DOS           บ 
+บ       by Rob Hamerling, Vianen, The Netherlands       บ 
+บ Phone: 31-3473-72136 (voice)    FIDOnet: 2:512/4.1098 บ 
+ศอออออออออออออออออออออออออออออออออออออออออออออออออออออออผ 
+
+    Downsort Version 5.9
+
+    Please read also the commentlines marked '5.9' in Downsort.Cfg!
+
+    þ  Considerable changes in parameter specifications:
+       ๙  Support of most commandline parameters removed!
+       ๙  Support for keywords 'MaxNewFiles' and 'TitleFont' in
+          Downsort.Cfg also removed: use xxxFileList for individual
+          specifications for each list.
+       ๙  Multiple 'xxxFileList' lines in Downsort.Cfg are supported now:
+          -  You may now specify as many xxxFileLists with the same(!) or
+             different list types as you need.
+          -  Each xxxFileList, regardless of same or different list, will
+             generate one and only one list according to its own set of
+             parameters.
+          -  Only a single privilege is now accepted per xxxFileList line,
+             but this may now be accompanied by 'userkeys'; specification
+             in the form: p/kkk.
+       ๙  File sort sequence (GROUP-sort) added for NEWFileList: primary
+          sort on area, then on filename.  Each group will be preceeded in
+          the list by a line with areaname and description.  GROUP-sort
+          works also for ORPHAN-lists, but is for all other lists synonym
+          with ALPHA.
+    þ  The contents of ALLFileList can now be limited by file-age, so it
+       can be called a NEWFileList in the format of ALLFileList or vice
+       versa.  But the SUMMARY-report ignores the file age limitation!
+    þ  FILES.BBS-files will be (re-)generated also when area does not
+       contain any files.
+    þ  Full support of Maximus' key/lock mechanism for filearea selection.
+       Key-characters follow the xxxFileList privilege, separated with a
+       slash, exactly the same as the area privilege specification in
+       MAX.CTL.  The privilege line in area heading will now also show the
+       arealocks.
+    þ  With the new keyword 'FileEXclude' you can define filespecs (with
+       wildcards) of files which should not appear in any list.
+    þ  Tired of the complaints about specification limits, I removed most
+       of these.  For example now unlimited number of title-lines,
+       areaIN/EXclude strings, non-duplicate file extensions, xxxFileList
+       lines, etc.
+    þ  AreaINclude and AreaEXclude can now be used simultaneously.
+    þ  Files with 'future' date will be excluded from NEW-, BBS- and
+       EMI-lists (special feature for certain CDROMs!).
+    þ  All block fonts now support same characterset (fonts 3 and 4 have
+       been extended with the characters supported in fonts 1 and 2), and
+       specification of block-font parameter now honored in all lists.
+       Default font for all lists changed to 3.
+    þ  Performance improvements with sorts on filedate, and during
+       directory scan (the latter only of 32-bits version).
+    þ  bugfixes:
+       ๙  Filedates beyond 2037(!) could cause empty BBS-, NEW- and
+          EMI-FileLists.
+       ๙  No 'duplicates' with only case differences in short OKList
+          anymore.
+    þ  Downsort's companion program HPFSDATE (and the 32-bit version
+       HPFSD386) can now reset the creationdate of files also in other than
+       current working directory.
+
+  ---------------------------------------   
+  Obtain 'mstruct.h' from MAXIMUS package   
+  ---------------------------------------   
+
+ Length  Method   Size  Ratio   Date    Time   CRC-32  Attr  Name
+ ------  ------   ----- -----   ----    ----   ------  ----  ----
+  55640  Implode  13887  76%  12-19-93  12:44  59a7decd --w  DOWNCOL.C
+  29573  Implode   4668  85%  11-15-93  11:56  9b27e64f --w  DOWNFNT.C
+  25139  Implode   6338  75%  12-18-93  13:16  b6ffbab5 --w  DOWNPAR.C
+  16270  Implode   3862  77%  12-12-93  20:20  93d04013 --w  DOWNRPT1.C
+  22005  Implode   5073  77%  11-15-93  12:11  1a4d7105 --w  DOWNRPT2.C
+  23244  Implode   5955  75%  12-19-93  11:28  c210fca4 --w  DOWNRPT3.C
+  14352  Implode   3584  76%  12-18-93  14:56  3a21ab4e --w  DOWNRPT4.C
+   6048  Implode   1694  72%  12-19-93  12:19  6e2feb11 --w  DOWNSORT.C
+  40705  Implode  10366  75%  12-18-93  20:49  3a1c7e77 --w  DOWNSRV.C
+   8857  Implode   2849  68%  12-18-93  20:52  da22e6f5 --w  DOWNVARS.C
+   2197  Implode    756  66%  11-05-93  21:38  622d26c1 --w  DOWNFPRO.H
+   8642  Implode   2690  69%  12-18-93  20:05  c57ce124 --w  DOWNSORT.H
+    334  Implode    302  10%  12-17-93  21:30  5762d9aa --w  DOWNSORT.DEF
+    571  Implode    414  28%  08-22-93  11:15  014c8a9e --w  DOWNSORT.MAK
+    599  Implode    411  32%  12-09-93  21:43  afa338d3 --w  DOWN386.MAK
+ 100010  Implode  37049  63%  12-19-93  09:32  84a065ec --w  DOWNSORT.SCR
+ ------          ------  ---                                 -------
+ 354186           99898  72%                                      16
